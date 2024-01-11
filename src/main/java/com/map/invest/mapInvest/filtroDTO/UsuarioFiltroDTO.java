@@ -6,11 +6,15 @@ import com.map.invest.mapInvest.filtro.Paginacao;
 import com.map.invest.mapInvest.filtro.PaginacaoFactory;
 import com.map.invest.mapInvest.filtro.UsuarioFiltro;
 import com.map.invest.mapInvest.filtroBuilder.UsuarioFiltroBuilder;
-
 import jakarta.ws.rs.QueryParam;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 import java.util.Optional;
 
+@Getter
+@Setter
 public class UsuarioFiltroDTO {
 
     @QueryParam(Resource.P_QUANTIDADE_REGISTROS)
@@ -37,94 +41,6 @@ public class UsuarioFiltroDTO {
     private String email;
     @QueryParam(Resource.P_LOGIN)
     private String login;
-
-    public Integer getQuantidadeRegistros() {
-        return quantidadeRegistros;
-    }
-
-    public void setQuantidadeRegistros(Integer quantidadeRegistros) {
-        this.quantidadeRegistros = quantidadeRegistros;
-    }
-
-    public Integer getPagina() {
-        return pagina;
-    }
-
-    public void setPagina(Integer pagina) {
-        this.pagina = pagina;
-    }
-
-    public List<Long> getUsuarioID() {
-        return usuarioID;
-    }
-
-    public void setUsuarioID(List<Long> usuarioID) {
-        this.usuarioID = usuarioID;
-    }
-
-    public Long getPerfilID() {
-        return perfilID;
-    }
-
-    public void setPerfilID(Long perfilID) {
-        this.perfilID = perfilID;
-    }
-
-    public String getCodPerfil() {
-        return CodPerfil;
-    }
-
-    public void setCodPerfil(String codPerfil) {
-        CodPerfil = codPerfil;
-    }
-
-    public String getNomePerfil() {
-        return nomePerfil;
-    }
-
-    public void setNomePerfil(String nomePerfil) {
-        this.nomePerfil = nomePerfil;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getSobreNome() {
-        return sobreNome;
-    }
-
-    public void setSobreNome(String sobreNome) {
-        this.sobreNome = sobreNome;
-    }
-
-    public String getCpfcnpj() {
-        return cpfcnpj;
-    }
-
-    public void setCpfcnpj(String cpfcnpj) {
-        this.cpfcnpj = cpfcnpj;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
 
     public FiltroWrapper filtroWrapper() {
         UsuarioFiltro filtro = UsuarioFiltroBuilder.newInstance()
