@@ -1,11 +1,17 @@
 package com.map.invest.mapInvest.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name = "PERMISSAOTELA")
 public class PermissaoTela implements MapInvestEntity {
@@ -23,51 +29,4 @@ public class PermissaoTela implements MapInvestEntity {
     @ManyToMany(mappedBy = "permissaoTelas", fetch = FetchType.LAZY)
     private List<Perfil> perfils;
 
-    public PermissaoTela() {
-    }
-
-    public Long getPermissaoTelaID() {
-        return permissaoTelaID;
-    }
-
-    public void setPermissaoTelaID(Long permissaoTelaID) {
-        this.permissaoTelaID = permissaoTelaID;
-    }
-
-    public String getNomePermissao() {
-        return nomePermissao;
-    }
-
-    public void setNomePermissao(String nomePermissao) {
-        this.nomePermissao = nomePermissao;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public List<Perfil> getPerfils() {
-        return perfils;
-    }
-
-    public void setPerfils(List<Perfil> perfils) {
-        this.perfils = perfils;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PermissaoTela that = (PermissaoTela) o;
-        return Objects.equals(permissaoTelaID, that.permissaoTelaID) && Objects.equals(nomePermissao, that.nomePermissao) && Objects.equals(descricao, that.descricao) && Objects.equals(perfils, that.perfils);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(permissaoTelaID, nomePermissao, descricao, perfils);
-    }
 }
