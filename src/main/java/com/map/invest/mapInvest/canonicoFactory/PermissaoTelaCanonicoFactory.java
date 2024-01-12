@@ -1,7 +1,6 @@
 package com.map.invest.mapInvest.canonicoFactory;
 
 import com.map.invest.mapInvest.canonico.PermissaoTelaCanonico;
-import com.map.invest.mapInvest.canonicoBuilder.PermissaoTelaCanonicoBuilder;
 import com.map.invest.mapInvest.entity.PermissaoTela;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 public class PermissaoTelaCanonicoFactory {
     public PermissaoTelaCanonico builderPermissaoTela(PermissaoTela tela) {
         return Optional.ofNullable(tela).map(entidade -> {
-            return PermissaoTelaCanonicoBuilder.newInstance()
+            return PermissaoTelaCanonico.builder()
                     .permissaoTelaID(entidade.getPermissaoTelaID())
                     .nomePermissao(entidade.getNomePermissao())
                     .descricao(entidade.getDescricao())

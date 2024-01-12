@@ -17,7 +17,7 @@ public interface UsuarioResource extends Resource {
     @Operation(summary = "Retorna o usuario consultada pelo codigo identificador (id).", tags = USUARIO, responses = {
             @ApiResponse(responseCode = RESPONSE_OK, description = "Sucesso.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UsuarioDTO.class))),
             @ApiResponse(responseCode = RESPONSE_BAD_REQUEST, description = "Código do usuario invalido.")})
-    Response getUsuario(Long usuarioID);
+    ResponseEntity getUsuario(Long usuarioID);
 
     @Operation(summary = "Retorna lista de Usuarios", tags = USUARIO, responses = {
             @ApiResponse(responseCode = RESPONSE_OK, description = "Sucesso.", content = @Content(mediaType = MediaType.APPLICATION_JSON, array = @ArraySchema(schema = @Schema(implementation = UsuarioDTO.class)))),})

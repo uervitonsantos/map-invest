@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.io.Serializable;
 
@@ -20,7 +22,6 @@ public class Usuario implements Serializable {
     @Column(name = "USUARIO_ID")
     private Long usuarioID;
 
-    @Id
     @Column(name = "PERFIL_ID")
     private Long perfilID;
 

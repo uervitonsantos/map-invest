@@ -11,15 +11,14 @@ import java.util.stream.Collectors;
 
 @Component
 public class PermissaoTelaDTOFactory {
-    public PermissaoTelaDTO permissaoTelaDto(PermissaoTelaCanonico canonico) {
-        if (canonico == null) {
-            return null;
-        }
-        PermissaoTelaDTO dto = new PermissaoTelaDTO();
-        dto.setPermissaoTelaID(canonico.getPermissaoTelaID());
-        dto.setNomePermissao(canonico.getNomePermissao());
-        dto.setDescricao(canonico.getDescricao());
-        return dto;
+    public PermissaoTelaDTO permissaoTelaDto(PermissaoTelaCanonico permissao) {
+        return Optional.ofNullable(permissao).map(entidade -> {
+            return PermissaoTelaDTO.builder()
+                    .permissaoTelaID(entidade.getPermissaoTelaID())
+                    .nomePermissao(entidade.getNomePermissao())
+                    .descricao(entidade.getDescricao())
+                    .build();
+        }).orElse(null);
     }
 
     public List<PermissaoTelaDTO> permissoesTelaDto(List<PermissaoTelaCanonico> resultList) {
@@ -29,12 +28,12 @@ public class PermissaoTelaDTOFactory {
     }
 
     public PermissaoTelaCanonico PermissaoCanonico(PermissaoTelaDTO dto) {
-        return Optional.ofNullable(dto).map(tela -> {
-            PermissaoTelaCanonico canonico = new PermissaoTelaCanonico();
-            canonico.setPermissaoTelaID(tela.getPermissaoTelaID());
-            canonico.setNomePermissao(tela.getNomePermissao());
-            canonico.setDescricao(tela.getDescricao());
-            return canonico;
+        return Optional.ofNullable(dto).map(permissao -> {
+            return PermissaoTelaCanonico.builder()
+                    .permissaoTelaID(permissao.getPermissaoTelaID())
+                    .nomePermissao(permissao.getNomePermissao())
+                    .descricao(permissao.getDescricao())
+                    .build();
         }).orElse(null);
     }
 }

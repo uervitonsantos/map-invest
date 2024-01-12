@@ -16,17 +16,17 @@ public class PerfilDTOFactory {
 
     @Autowired
     private PermissaoTelaDTOFactory permissaoTelaDTOFactory;
-    public PerfilDTO perfilDto(PerfilCanonico canonico) {
-        if (canonico == null) {
-            return null;
-        }
-        PerfilDTO dto = new PerfilDTO();
-        dto.setPerfilID(canonico.getPerfilID());
-        dto.setCodPerfil(canonico.getCodPerfil());
-        dto.setNomePerfil(canonico.getNomePerfil());
-        dto.setDescricao(canonico.getDescricao());
-        dto.setPermissaoTelas(permissaoTelaDTOFactory.permissoesTelaDto(canonico.getPermissaoTelas()));
-        return dto;
+
+    public PerfilDTO perfilDto(PerfilCanonico perfil) {
+        return Optional.ofNullable(perfil).map(entidade -> {
+            return PerfilDTO.builder()
+                    .perfilID(entidade.getPerfilID())
+                    .codPerfil(entidade.getCodPerfil())
+                    .nomePerfil(entidade.getNomePerfil())
+                    .descricao(entidade.getDescricao())
+                    .permissaoTelas(permissaoTelaDTOFactory.permissoesTelaDto(entidade.getPermissaoTelas()))
+                    .build();
+        }).orElse(null);
     }
 
     public List<PerfilDTO> perfisDto(List<PerfilCanonico> resultList) {

@@ -15,7 +15,9 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UsuarioRepositorio extends MapInvestRepositorio {
@@ -28,11 +30,14 @@ public class UsuarioRepositorio extends MapInvestRepositorio {
     }
 
     public UsuarioCanonico buscaUsuario(Long usuarioID) {
-        Usuario usuario = busca(Usuario.class, usuarioID);
-        if (usuario == null) {
-            return null;
-        }
-        return usuarioCanonicoFactory.builderUsuario(usuario);
+        Usuario usuario = busca(usuarioID);
+        return Optional.ofNullable(usuario).map(u -> {
+            return usuarioCanonicoFactory.builderUsuario(u);
+        }).orElse(null);
+    }
+
+    private Arrays buscaUsuariosCanonico(FiltroWrapper filtroWrapper) {
+        return null;
     }
 
     public List<UsuarioCanonico> buscaUsuarios(FiltroWrapper filtro) {

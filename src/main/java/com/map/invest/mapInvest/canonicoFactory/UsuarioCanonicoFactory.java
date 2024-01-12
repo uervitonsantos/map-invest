@@ -1,7 +1,6 @@
 package com.map.invest.mapInvest.canonicoFactory;
 
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
-import com.map.invest.mapInvest.canonicoBuilder.UsuarioCanonicoBuilder;
 import com.map.invest.mapInvest.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ public class UsuarioCanonicoFactory {
 
     public UsuarioCanonico builderUsuario(Usuario usuario) {
         return Optional.ofNullable(usuario).map(entidade -> {
-            return UsuarioCanonicoBuilder.newInstance()
+            return UsuarioCanonico.builder()
                     .usuarioID(entidade.getUsuarioID())
                     .perfilID(entidade.getPerfilID())
                     .nome(entidade.getNome())

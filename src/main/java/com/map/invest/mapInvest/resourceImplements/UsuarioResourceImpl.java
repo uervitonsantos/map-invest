@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping(value = "/usuario")
 public class UsuarioResourceImpl implements UsuarioResource {
 
-    private static final String PATH_ID = "{usuarioID}";
+    private static final String PATH_ID = "/{usuarioID}";
 
     @Autowired
     private UsuarioBean usuarioBean;
@@ -30,8 +30,9 @@ public class UsuarioResourceImpl implements UsuarioResource {
 
     @GetMapping(PATH_ID)
     @Override
-    public Response getUsuario(@PathParam(P_ID_USUARIO) Long usuarioID) {
-        return Response.ok(usuarioDTOFactory.usuarioDto(usuarioBean.buscaUsuario(usuarioID))).build();
+    public ResponseEntity<UsuarioDTO> getUsuario(@PathVariable(P_ID_USUARIO) Long usuarioID) {
+        UsuarioDTO usuarioCanonico = usuarioDTOFactory.usuarioDto(usuarioBean.buscaUsuario(usuarioID));
+        return ResponseEntity.ok().body(usuarioCanonico);
     }
 
     @GetMapping

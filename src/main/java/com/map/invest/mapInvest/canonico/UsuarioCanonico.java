@@ -1,12 +1,13 @@
 package com.map.invest.mapInvest.canonico;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@JsonIgnoreType
+@Builder
 public class UsuarioCanonico {
 
     private Long usuarioID;

@@ -5,7 +5,6 @@ import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.filtro.Paginacao;
 import com.map.invest.mapInvest.filtro.PaginacaoFactory;
 import com.map.invest.mapInvest.filtro.UsuarioFiltro;
-import com.map.invest.mapInvest.filtroBuilder.UsuarioFiltroBuilder;
 import jakarta.ws.rs.QueryParam;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +18,8 @@ public class UsuarioFiltroDTO {
 
     @QueryParam(Resource.P_QUANTIDADE_REGISTROS)
     private Integer quantidadeRegistros;
-
     @QueryParam(Resource.P_PAGINA)
     private Integer pagina;
-
     @QueryParam(Resource.P_ID_USUARIO)
     private List<Long> usuarioID;
     @QueryParam(Resource.P_ID_PERFIL)
@@ -43,7 +40,7 @@ public class UsuarioFiltroDTO {
     private String login;
 
     public FiltroWrapper filtroWrapper() {
-        UsuarioFiltro filtro = UsuarioFiltroBuilder.newInstance()
+        UsuarioFiltro filtro = UsuarioFiltro.builder()
                 .usuarioID(usuarioID)
                 .perfilID(perfilID)
                 .nomePerfil(nomePerfil)

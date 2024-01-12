@@ -1,7 +1,6 @@
 package com.map.invest.mapInvest.canonicoFactory;
 
 import com.map.invest.mapInvest.canonico.PerfilCanonico;
-import com.map.invest.mapInvest.canonicoBuilder.PerfilCanonicoBuilder;
 import com.map.invest.mapInvest.entity.Perfil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,7 @@ public class PerfilCanonicoFactory {
 
     public PerfilCanonico builderPerfil(Perfil perfil) {
         return Optional.ofNullable(perfil).map(entidade -> {
-            return PerfilCanonicoBuilder.newInstance()
+            return PerfilCanonico.builder()
                     .perfilID(entidade.getPerfilID())
                     .codPerfil(entidade.getCodPerfil())
                     .nomePerfil(entidade.getNomePerfil())

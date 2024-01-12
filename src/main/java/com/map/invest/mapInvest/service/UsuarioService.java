@@ -18,12 +18,14 @@ public class UsuarioService {
     private UsuarioRepositorio usuarioRepositorio;
 
     public UsuarioCanonico buscaUsuario(Long usuarioID) {
-        UsuarioCanonico usuario = usuarioRepositorio.buscaUsuario(usuarioID);
-        if (usuario == null) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_AGREGACAO_NAO_ENCONTRADO);
-        }
-        return usuario;
+        return  Optional.ofNullable(usuarioRepositorio.buscaUsuario(usuarioID))
+                .orElseThrow(() -> new RuntimeException());
     }
+
+
+
+//            throw new ValidacaoException(CodigoUsuario.ERRO_AGREGACAO_NAO_ENCONTRADO);
+
 
     public Usuario buscarUsuario(Long usuarioID) {
         return Optional.ofNullable(usuarioRepositorio.busca(Usuario.class, usuarioID))

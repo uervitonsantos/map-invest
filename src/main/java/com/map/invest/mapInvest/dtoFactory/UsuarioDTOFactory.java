@@ -16,20 +16,20 @@ public class UsuarioDTOFactory {
     @Autowired
     private PerfilDTOFactory perfilDTOFactory;
 
-    public UsuarioDTO usuarioDto(UsuarioCanonico canonico) {
-        if (canonico == null) {
-            return null;
-        }
-        UsuarioDTO dto = new UsuarioDTO();
-        dto.setUsuarioID(canonico.getUsuarioID());
-        dto.setNome(canonico.getNome());
-        dto.setSobreNome(canonico.getSobreNome());
-        dto.setCpfcnpj(canonico.getCpfcnpj());
-        dto.setEmail(canonico.getEmail());
-        dto.setLogin(canonico.getLogin());
-        dto.setPerfil(perfilDTOFactory.perfilDto(canonico.getPerfil()));
-        return dto;
+    public UsuarioDTO usuarioDto(UsuarioCanonico usuario) {
+        return Optional.ofNullable(usuario).map(canonico -> {
+            return UsuarioDTO.builder()
+                    .usuarioID(canonico.getUsuarioID())
+                    .nome(canonico.getNome())
+                    .sobreNome(canonico.getSobreNome())
+                    .cpfcnpj(canonico.getCpfcnpj())
+                    .email(canonico.getEmail())
+                    .login(canonico.getLogin())
+                    .perfil(perfilDTOFactory.perfilDto(canonico.getPerfil()))
+                    .build();
+        }).orElse(null);
     }
+
     public List<UsuarioDTO> usuariosDto(List<UsuarioCanonico> resultList) {
         return Optional.ofNullable(resultList).map(lista -> {
             return lista.stream().map(el -> usuarioDto(el)).collect(Collectors.toList());
@@ -37,15 +37,15 @@ public class UsuarioDTOFactory {
     }
 
     public UsuarioCanonico usuarioCanonico(UsuarioDTO dto) {
-        return Optional.ofNullable(dto).map(usuario -> {
-            UsuarioCanonico canonico = new UsuarioCanonico();
-            canonico.setUsuarioID(usuario.getUsuarioID());
-            canonico.setNome(usuario.getNome());
-            canonico.setSobreNome(usuario.getSobreNome());
-            canonico.setCpfcnpj(usuario.getCpfcnpj());
-            canonico.setEmail(usuario.getEmail());
-            canonico.setLogin(usuario.getLogin());
-            return canonico;
+        return Optional.ofNullable(dto).map(entidade -> {
+            return UsuarioCanonico.builder()
+                    .usuarioID(entidade.getUsuarioID())
+                    .nome(entidade.getNome())
+                    .sobreNome(entidade.getSobreNome())
+                    .cpfcnpj(entidade.getCpfcnpj())
+                    .email(entidade.getEmail())
+                    .login(entidade.getLogin())
+                    .build();
         }).orElse(null);
     }
 }
