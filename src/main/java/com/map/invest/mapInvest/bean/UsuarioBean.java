@@ -3,7 +3,6 @@ package com.map.invest.mapInvest.bean;
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.service.UsuarioService;
-import jakarta.ejb.Stateless;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +17,7 @@ public class UsuarioBean {
     public UsuarioCanonico buscaUsuario(Long usuarioID) {
         return service.buscaUsuario(usuarioID);
     }
+
     public List<UsuarioCanonico> buscaUsuarios(FiltroWrapper filtro) {
         return service.buscaUsuarios(filtro);
     }
@@ -27,7 +27,8 @@ public class UsuarioBean {
     }
 
     public UsuarioCanonico editaUsuario(UsuarioCanonico canonico) {
-        return service.editaUsuario(canonico);
+        Long editaUsuario = service.editaUsuario(canonico);
+        return buscaUsuario(editaUsuario);
     }
 
     public void removeUsuario(Long usuarioID) {

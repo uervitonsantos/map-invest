@@ -26,6 +26,7 @@ public class UsuarioCanonicoFactory {
                     .cpfcnpj(entidade.getCpfcnpj())
                     .email(entidade.getEmail())
                     .login(entidade.getLogin())
+                    .senha(entidade.getSenha())
                     .perfil(perfilCanonicoFactory.builderPerfil(entidade.getPerfil()))
                     .build();
         }).orElse(null);

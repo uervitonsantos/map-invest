@@ -2,7 +2,9 @@ package com.map.invest.mapInvest.dtoFactory;
 
 
 import com.map.invest.mapInvest.canonico.PerfilCanonico;
+import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.dto.PerfilDTO;
+import com.map.invest.mapInvest.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,18 @@ public class PerfilDTOFactory {
         return Optional.ofNullable(resultList).map(lista -> {
             return lista.stream().map(el -> perfilDto(el)).collect(Collectors.toList());
         }).orElse(new ArrayList<>());
+    }
+
+    public PerfilCanonico perfilCanonico(PerfilDTO dto) {
+        return Optional.ofNullable(dto).map(entidade -> {
+            return PerfilCanonico.builder()
+                    .perfilID(entidade.getPerfilID())
+                    .codPerfil(entidade.getCodPerfil())
+                    .nomePerfil(entidade.getNomePerfil())
+                    .descricao(entidade.getDescricao())
+                    .permissaoTelas(permissaoTelaDTOFactory.permissoesTelaCanonico(entidade.getPermissaoTelas()))
+                    .build();
+        }).orElse(null);
     }
 
 }

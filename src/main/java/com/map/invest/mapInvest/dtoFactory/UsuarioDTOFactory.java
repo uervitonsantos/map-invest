@@ -20,11 +20,13 @@ public class UsuarioDTOFactory {
         return Optional.ofNullable(usuario).map(canonico -> {
             return UsuarioDTO.builder()
                     .usuarioID(canonico.getUsuarioID())
+                    .perfilID(canonico.getPerfilID())
                     .nome(canonico.getNome())
                     .sobreNome(canonico.getSobreNome())
                     .cpfcnpj(canonico.getCpfcnpj())
                     .email(canonico.getEmail())
                     .login(canonico.getLogin())
+                    .senha(canonico.getSenha())
                     .perfil(perfilDTOFactory.perfilDto(canonico.getPerfil()))
                     .build();
         }).orElse(null);
@@ -40,11 +42,14 @@ public class UsuarioDTOFactory {
         return Optional.ofNullable(dto).map(entidade -> {
             return UsuarioCanonico.builder()
                     .usuarioID(entidade.getUsuarioID())
+                    .perfilID(entidade.getPerfilID())
                     .nome(entidade.getNome())
                     .sobreNome(entidade.getSobreNome())
                     .cpfcnpj(entidade.getCpfcnpj())
                     .email(entidade.getEmail())
                     .login(entidade.getLogin())
+                    .senha(entidade.getSenha())
+                    .perfil(perfilDTOFactory.perfilCanonico(entidade.getPerfil()))
                     .build();
         }).orElse(null);
     }

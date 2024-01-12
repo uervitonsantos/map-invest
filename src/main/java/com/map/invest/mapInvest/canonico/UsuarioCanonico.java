@@ -17,6 +17,7 @@ public class UsuarioCanonico {
     private String cpfcnpj;
     private String email;
     private String login;
+    private String senha;
     private PerfilCanonico perfil;
 
 }

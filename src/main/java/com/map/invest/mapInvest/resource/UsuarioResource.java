@@ -26,15 +26,15 @@ public interface UsuarioResource extends Resource {
     @Operation(summary = "Adiciona um novo usuario", tags = USUARIO, responses = {
             @ApiResponse(responseCode = RESPONSE_OK, description = "Sucesso.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UsuarioDTO.class))),
             @ApiResponse(responseCode = RESPONSE_BAD_REQUEST, description = "Erro ao criar usuario.")})
-    Response criaUsuario(UsuarioDTO dto);
+    ResponseEntity criaUsuario(UsuarioDTO dto);
 
     @Operation(summary = "Atualiza usuario", tags = USUARIO, responses = {
             @ApiResponse(responseCode = RESPONSE_OK, description = "Sucesso.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UsuarioDTO.class))),
             @ApiResponse(responseCode = RESPONSE_BAD_REQUEST, description = "Erro ao atualizar o usuario.")})
-    Response atualizaUsuario(Long usuarioID, UsuarioDTO dto);
+    ResponseEntity atualizaUsuario(Long usuarioID, UsuarioDTO dto);
 
     @Operation(summary = "Remove usuario", tags = USUARIO, responses = {
             @ApiResponse(responseCode = RESPONSE_NO_CONTENT, description = "Sucesso."),
             @ApiResponse(responseCode = RESPONSE_BAD_REQUEST, description = "Erro ao remover usuario.")})
-    Response removeUsuario(Long usuarioID);
+    ResponseEntity removeUsuario(Long usuarioID);
 }

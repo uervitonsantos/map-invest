@@ -27,7 +27,7 @@ public class PermissaoTelaDTOFactory {
         }).orElse(new ArrayList<>());
     }
 
-    public PermissaoTelaCanonico PermissaoCanonico(PermissaoTelaDTO dto) {
+    public PermissaoTelaCanonico permissaoCanonico(PermissaoTelaDTO dto) {
         return Optional.ofNullable(dto).map(permissao -> {
             return PermissaoTelaCanonico.builder()
                     .permissaoTelaID(permissao.getPermissaoTelaID())
@@ -35,5 +35,11 @@ public class PermissaoTelaDTOFactory {
                     .descricao(permissao.getDescricao())
                     .build();
         }).orElse(null);
+    }
+
+    public List<PermissaoTelaCanonico> permissoesTelaCanonico(List<PermissaoTelaDTO> resultList) {
+        return Optional.ofNullable(resultList).map(lista -> {
+            return lista.stream().map(el -> permissaoCanonico(el)).collect(Collectors.toList());
+        }).orElse(new ArrayList<>());
     }
 }

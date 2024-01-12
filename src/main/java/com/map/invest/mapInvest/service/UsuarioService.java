@@ -1,5 +1,6 @@
 package com.map.invest.mapInvest.service;
 
+import com.google.common.base.Strings;
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.entity.Usuario;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
@@ -19,7 +20,7 @@ public class UsuarioService {
 
     public UsuarioCanonico buscaUsuario(Long usuarioID) {
         return  Optional.ofNullable(usuarioRepositorio.buscaUsuario(usuarioID))
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new RuntimeException("Usuario não Encontrado"));
     }
 
 
@@ -37,19 +38,34 @@ public class UsuarioService {
     }
 
     public UsuarioCanonico criaUsuario(UsuarioCanonico usuario) {
-        validaUsuario(usuario);
-        Usuario codUsuario = salvaUsuario(usuario);
-        return buscaUsuario(codUsuario.getUsuarioID());
+       UsuarioCanonico user = usuarioRepositorio.buscaUsuario(usuario.getUsuarioID());
+       if (user != null){
+           throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_AGREGACAO_JA_EXISTE);
+       }
+        validaDadosUsuario(usuario);
+        Long codUsuario = salvaUsuario(usuario);
+        return buscaUsuario(codUsuario);
     }
 
-    public UsuarioCanonico editaUsuario(UsuarioCanonico usuario) {
-        buscarUsuario(usuario.getUsuarioID());
-        validaUsuario(usuario);
-        Usuario getUsuario = salvaUsuario(usuario);
-        return buscaUsuario(getUsuario.getUsuarioID());
+    public Long editaUsuario(UsuarioCanonico usuarioCanonico) {
+        Usuario usuario = buscarUsuario(usuarioCanonico.getUsuarioID());
+        validaUsuario(usuario, usuarioCanonico);
+        popularUsuario(usuario, usuarioCanonico);
+        usuario = usuarioRepositorio.merge(usuario);
+        return usuario.getUsuarioID();
     }
 
-    private Usuario salvaUsuario(UsuarioCanonico canonico) {
+    private void popularUsuario(Usuario usuario, UsuarioCanonico usuarioCanonico) {
+        usuario.setPerfilID(usuarioCanonico.getPerfilID());
+        usuario.setNome(usuarioCanonico.getNome());
+        usuario.setSobreNome(usuarioCanonico.getSobreNome());
+        usuario.setCpfcnpj(usuarioCanonico.getCpfcnpj());
+        usuario.setEmail(usuarioCanonico.getEmail());
+        usuario.setLogin(usuarioCanonico.getLogin());
+        usuario.setSenha(usuarioCanonico.getSenha());
+    }
+
+    private Long salvaUsuario(UsuarioCanonico canonico) {
         Usuario usuario = geraUsuario(canonico);
         usuario.setPerfilID(canonico.getPerfilID());
         usuario.setNome(canonico.getNome());
@@ -57,8 +73,9 @@ public class UsuarioService {
         usuario.setCpfcnpj(canonico.getCpfcnpj());
         usuario.setEmail(canonico.getEmail());
         usuario.setLogin(canonico.getLogin());
+        usuario.setSenha(canonico.getSenha());
         Usuario usuarioSalvo = usuarioRepositorio.salvaUsuario(usuario);
-        return usuarioRepositorio.merge(usuarioSalvo);
+        return usuarioSalvo.getUsuarioID();
     }
 
     private Usuario geraUsuario(UsuarioCanonico canonico) {
@@ -68,17 +85,43 @@ public class UsuarioService {
         return usuarioRepositorio.busca(canonico.getUsuarioID());
     }
 
-    private void validaUsuario(UsuarioCanonico usuario) {
-        if (usuario.getUsuarioID() == null) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_AGREGACAO_OBRIGATORIO);
-        }
-        if (usuario.getPerfilID() == null) {
+    private void validaUsuario(Usuario usuario, UsuarioCanonico usuarioCanonico) {
+        validaDadosUsuario(usuarioCanonico);
+        validaPadraoLoginSenha(usuario, usuarioCanonico);
+
+    }
+    private void validaDadosUsuario(UsuarioCanonico usuarioCanonico) {
+        if (Strings.isNullOrEmpty(String.valueOf(usuarioCanonico.getPerfilID()))) {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DESCRICAO_OBJETIVO_AGREGACAO_OBRIGATORIO);
         }
 
-        if (usuario.getNome() != null) {
+        if (Strings.isNullOrEmpty(usuarioCanonico.getNome())) {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
         }
+
+        if (Strings.isNullOrEmpty(usuarioCanonico.getSobreNome())) {
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+        }
+
+        if (Strings.isNullOrEmpty(usuarioCanonico.getCpfcnpj())) {
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+        }
+
+        if (Strings.isNullOrEmpty(usuarioCanonico.getEmail())) {
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+        }
+
+        if (Strings.isNullOrEmpty(usuarioCanonico.getLogin())) {
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+        }
+
+        if (Strings.isNullOrEmpty(usuarioCanonico.getSenha())) {
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+        }
+    }
+
+    private void validaPadraoLoginSenha(Usuario usuario, UsuarioCanonico usuarioCanonico) {
+        //Implementar a validação de um padrão para o login e numeros de caracteres da senha
     }
 
     public void removeUsuario(Long usuarioID) {

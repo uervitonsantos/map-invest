@@ -8,6 +8,7 @@ import com.map.invest.mapInvest.util.constantes.TipoOrdenacaoEnum;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.metamodel.SingularAttribute;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Transactional
 public abstract class AbstractRepositorio {
 
     public static final String JAVAX_PERSISTENCE_FETCHGRAPH = "javax.persistence.fetchgraph";

@@ -10,10 +10,12 @@ import lombok.Setter;
 public class UsuarioDTO {
 
     private Long usuarioID;
+    private Long perfilID;
     private String nome;
     private String sobreNome;
     private String cpfcnpj;
     private String email;
     private String login;
+    private String senha;
     private PerfilDTO perfil;
 }

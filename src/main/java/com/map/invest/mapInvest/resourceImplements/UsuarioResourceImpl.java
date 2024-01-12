@@ -45,7 +45,7 @@ public class UsuarioResourceImpl implements UsuarioResource {
 
     @PostMapping
     @Override
-    public Response criaUsuario(UsuarioDTO dto) {
+    public ResponseEntity<UsuarioDTO> criaUsuario(@RequestBody UsuarioDTO dto) {
         UsuarioCanonico canonico = usuarioDTOFactory.usuarioCanonico(dto);
         UsuarioCanonico usuarioSalva = usuarioBean.criaUsuario(canonico);
         return criaResponse(usuarioSalva);
@@ -53,21 +53,22 @@ public class UsuarioResourceImpl implements UsuarioResource {
 
     @PutMapping(PATH_ID)
     @Override
-    public Response atualizaUsuario(@PathParam(P_ID_USUARIO) Long usuarioID, UsuarioDTO dto) {
+    public ResponseEntity atualizaUsuario(@PathVariable(P_ID_USUARIO) Long usuarioID, @RequestBody UsuarioDTO dto) {
         dto.setUsuarioID(usuarioID);
         UsuarioCanonico canonico = usuarioDTOFactory.usuarioCanonico(dto);
         UsuarioCanonico usuarioAtualizada = usuarioBean.editaUsuario(canonico);
         return criaResponse(usuarioAtualizada);
     }
 
-    private Response criaResponse(UsuarioCanonico usuarioSalva) {
-        return Response.ok(usuarioDTOFactory.usuarioDto(usuarioBean.buscaUsuario(usuarioSalva.getUsuarioID()))).build();
+    private ResponseEntity criaResponse(@RequestBody UsuarioCanonico usuarioSalva) {
+        UsuarioDTO usuarioDto = usuarioDTOFactory.usuarioDto(usuarioBean.buscaUsuario(usuarioSalva.getUsuarioID()));
+        return ResponseEntity.ok().body(usuarioDto);
     }
 
     @DeleteMapping(PATH_ID)
     @Override
-    public Response removeUsuario(@PathParam(P_ID_USUARIO) Long usuarioID) {
+    public ResponseEntity removeUsuario(@PathVariable(P_ID_USUARIO) Long usuarioID) {
         usuarioBean.removeUsuario(usuarioID);
-        return Response.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 }
