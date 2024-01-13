@@ -19,7 +19,7 @@ public class Paginacao {
     Paginacao(int pagina, int quantidadeRegistros) {
         if (pagina < PAGINA_MINIMA_VALIDA) {
             throw new ValidacaoException(
-                    CodigoValidacao.ERRO_VALIDACAO_PAGINA_INVALIDA);
+                    String.valueOf(CodigoValidacao.ERRO_VALIDACAO_PAGINA_INVALIDA));
         }
 
         validaQuantidadeRegistros(quantidadeRegistros);
@@ -37,7 +37,7 @@ public class Paginacao {
 
     private static void validaQuantidadeRegistros(int quantidadeRegistros) {
         if (quantidadeRegistros < PAGINA_MINIMA_VALIDA || quantidadeRegistros > LIMITE_MAX_PAGINACAO) {
-            throw new ValidacaoException(CodigoValidacao.ERRO_VALIDACAO_QUANTIDADE_REGISTROS_INVALIDA);
+            throw new ValidacaoException(String.valueOf(CodigoValidacao.ERRO_VALIDACAO_QUANTIDADE_REGISTROS_INVALIDA));
         }
     }
 

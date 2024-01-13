@@ -7,6 +7,8 @@ import com.map.invest.mapInvest.entity.Usuario;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.filtro.UsuarioFiltro;
 import com.map.invest.mapInvest.metamodel.Usuario_;
+import com.map.invest.mapInvest.util.validacao.CodigoUsuario;
+import com.map.invest.mapInvest.util.validacao.exception.ValidacaoException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

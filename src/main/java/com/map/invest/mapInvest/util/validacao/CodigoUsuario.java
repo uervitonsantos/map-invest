@@ -1,30 +1,30 @@
 package com.map.invest.mapInvest.util.validacao;
 
-public enum CodigoUsuario implements Codigo {
+public enum CodigoUsuario {
 
-    //@formatter:off
+    ERRO_VALIDACAO_COD_USUARIO_NAO_EXISTE("Código do usuário não existe na base de dados."),
+    ERRO_VALIDACAO_COD_USUARIO_JA_EXISTE("Código do usuário já cadastrada na base de dados."),
+    ERRO_VALIDACAO_EMAIL_JA_EXISTE("Email do usuário já cadastrada na base de dados."),
+    ERRO_VALIDACAO_EMAIL_NAO_EXISTE("Email do usuário não existe na base de dados."),
+    ERRO_VALIDACAO_LOGIN_JA_EXISTE("Login do usuário já cadastrada na base de dados."),
+    ERRO_VALIDACAO_COD_PERFIL_OBRIGATORIO("Obrigatório informar o código do perfil."),
+    ERRO_VALIDACAO_NOME_OBRIGATORIO("Obrigatório informar o nome do usuário."),
+    ERRO_VALIDACAO_SOBRENOME_OBRIGATORIO("Obrigatório informar o sobrenome do usuário."),
+    ERRO_VALIDACAO_CPF_CNPJ_OBRIGATORIO("Obrigatório informar o CPF ou CNPJ do usuário."),
+    ERRO_VALIDACAO_EMAIL_OBRIGATORIO("Obrigatório informar o email do usuário."),
+    ERRO_VALIDACAO_LOGIN_OBRIGATORIO("Obrigatório informar o login do usuário."),
+    ERRO_VALIDACAO_SENHA_OBRIGATORIO("Obrigatório informar a senha do usuário."),
 
-    ERRO_VALIDACAO_DESCRICAO_AGREGACAO_OBRIGATORIO("erro.validacao.descricao.agregacao.obrigatorio"),
-    ERRO_VALIDACAO_DESCRICAO_OBJETIVO_AGREGACAO_OBRIGATORIO("erro.validacao.descricao.objetivo.agregacao.obrigatorio"),
-    ERRO_VALIDACAO_DATA_INICIO_AGREGACAO_OBRIGATORIO("erro.validacao.data.inicio.agregacao.obrigatorio"),
-    ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO("erro.validacao.data.fim.agregacao.menor.que.data.inicio"),
-    ERRO_VALIDACAO_COD_AGREGACAO_OBRIGATORIO("erro.validacao.cod.agregacao.obrigatorio"),
-    ERRO_VALIDACAO_COD_AGREGACAO_JA_EXISTE("erro.validacao.cod.agregacao.ja.existe"),
-    ERRO_AGREGACAO_NAO_ENCONTRADO("erro.agregacao.nao.encontrado"),
-    ERRO_SEQ_AGREGACAO_ESTRUTURA_INFORMACAO_NAO_INFORMADO("erro.seq.agregacao.estrutura.informacao.nao.informado"),
-    ERRO_SEQ_ESTRUTURA_INFORMACAO_NAO_INFORMADO("erro.seq.estrutura.informacao.nao.informado"),
-    ERRO_ESTRUTURA_INFORMACAO_NAO_ENCONTRADA("erro.estrutura.informacao.nao.encontrada"),
-    ERRO_DATA_INICIAL_NAO_INFORMADO("erro.data.inicial.nao.informado"),
     ;
 
-    private String codigo;
+    private final String valor;
 
-    private CodigoUsuario(String codigo) {
-        this.codigo = codigo;
+    private CodigoUsuario(String valor) {
+        this.valor = valor;
     }
 
-    @Override
-    public String getCodigo() {
-        return null;
+    public String getValor() {
+        return valor;
     }
+
 }

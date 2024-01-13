@@ -19,29 +19,25 @@ public class UsuarioService {
     private UsuarioRepositorio usuarioRepositorio;
 
     public UsuarioCanonico buscaUsuario(Long usuarioID) {
-        return  Optional.ofNullable(usuarioRepositorio.buscaUsuario(usuarioID))
-                .orElseThrow(() -> new RuntimeException("Usuario não Encontrado"));
+        return Optional.ofNullable(usuarioRepositorio.buscaUsuario(usuarioID))
+                .orElseThrow(() -> new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_USUARIO_NAO_EXISTE.getValor()));
     }
-
-
-
-//            throw new ValidacaoException(CodigoUsuario.ERRO_AGREGACAO_NAO_ENCONTRADO);
-
 
     public Usuario buscarUsuario(Long usuarioID) {
         return Optional.ofNullable(usuarioRepositorio.busca(Usuario.class, usuarioID))
-                .orElseThrow(() -> new ValidacaoException(CodigoUsuario.ERRO_AGREGACAO_NAO_ENCONTRADO));
+                .orElseThrow(() -> new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_USUARIO_NAO_EXISTE.getValor()));
     }
+
 
     public List<UsuarioCanonico> buscaUsuarios(FiltroWrapper filtro) {
         return usuarioRepositorio.buscaUsuarios(filtro);
     }
 
     public UsuarioCanonico criaUsuario(UsuarioCanonico usuario) {
-       UsuarioCanonico user = usuarioRepositorio.buscaUsuario(usuario.getUsuarioID());
-       if (user != null){
-           throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_AGREGACAO_JA_EXISTE);
-       }
+        UsuarioCanonico user = usuarioRepositorio.buscaUsuario(usuario.getUsuarioID());
+        if (user != null) {
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_USUARIO_JA_EXISTE.getValor());
+        }
         validaDadosUsuario(usuario);
         Long codUsuario = salvaUsuario(usuario);
         return buscaUsuario(codUsuario);
@@ -90,33 +86,34 @@ public class UsuarioService {
         validaPadraoLoginSenha(usuario, usuarioCanonico);
 
     }
+
     private void validaDadosUsuario(UsuarioCanonico usuarioCanonico) {
-        if (Strings.isNullOrEmpty(String.valueOf(usuarioCanonico.getPerfilID()))) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DESCRICAO_OBJETIVO_AGREGACAO_OBRIGATORIO);
+        if (usuarioCanonico.getPerfilID() == null) {
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_PERFIL_OBRIGATORIO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getNome())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_NOME_OBRIGATORIO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getSobreNome())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_SOBRENOME_OBRIGATORIO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getCpfcnpj())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_CPF_CNPJ_OBRIGATORIO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getEmail())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_EMAIL_OBRIGATORIO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getLogin())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_LOGIN_OBRIGATORIO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getSenha())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_DATA_FIM_AGREGACAO_MENOR_QUE_DATA_INICIO);
+            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_SENHA_OBRIGATORIO.getValor());
         }
     }
 
