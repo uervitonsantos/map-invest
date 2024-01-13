@@ -1,7 +1,7 @@
 package com.map.invest.mapInvest.dtoFactory;
 
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
-import com.map.invest.mapInvest.dto.UsuarioDTO;
+import com.map.invest.mapInvest.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +16,15 @@ public class UsuarioDTOFactory {
     @Autowired
     private PerfilDTOFactory perfilDTOFactory;
 
+    @Autowired
+    private TelefoneDTOFactory telefoneDTOFactory;
+    @Autowired
+    private AcessoDTOFactory acessoDTOFactory;
+    @Autowired
+    private DocumentoDTOFactory documentoDTOFactory;
+    @Autowired
+    private EnderecoDTOFactory enderecoDTOFactory;
+
     public UsuarioDTO usuarioDto(UsuarioCanonico usuario) {
         return Optional.ofNullable(usuario).map(canonico -> {
             return UsuarioDTO.builder()
@@ -23,10 +32,11 @@ public class UsuarioDTOFactory {
                     .perfilID(canonico.getPerfilID())
                     .nome(canonico.getNome())
                     .sobreNome(canonico.getSobreNome())
-                    .cpfcnpj(canonico.getCpfcnpj())
                     .email(canonico.getEmail())
-                    .login(canonico.getLogin())
-                    .senha(canonico.getSenha())
+                    .documento(documentoDTOFactory.documentoDto(canonico.getDocumento()))
+                    .endereco(enderecoDTOFactory.enderecoDto(canonico.getEndereco()))
+                    .telefones(telefoneDTOFactory.telefonesDTO(canonico.getTelefones()))
+                    .acesso(acessoDTOFactory.acessoDto(canonico.getAcesso()))
                     .perfil(perfilDTOFactory.perfilDto(canonico.getPerfil()))
                     .build();
         }).orElse(null);
@@ -45,10 +55,11 @@ public class UsuarioDTOFactory {
                     .perfilID(entidade.getPerfilID())
                     .nome(entidade.getNome())
                     .sobreNome(entidade.getSobreNome())
-                    .cpfcnpj(entidade.getCpfcnpj())
                     .email(entidade.getEmail())
-                    .login(entidade.getLogin())
-                    .senha(entidade.getSenha())
+                    .documento(documentoDTOFactory.documentoCanonico(entidade.getDocumento()))
+                    .endereco(enderecoDTOFactory.enderecoCanonico(entidade.getEndereco()))
+                    .telefones(telefoneDTOFactory.telefonesCanonico(entidade.getTelefones()))
+                    .acesso(acessoDTOFactory.acessoCanonico(entidade.getAcesso()))
                     .perfil(perfilDTOFactory.perfilCanonico(entidade.getPerfil()))
                     .build();
         }).orElse(null);

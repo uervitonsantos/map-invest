@@ -1,9 +1,11 @@
 package com.map.invest.mapInvest.canonico;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.map.invest.mapInvest.entity.Endereco;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,10 +16,15 @@ public class UsuarioCanonico {
     private Long perfilID;
     private String nome;
     private String sobreNome;
-    private String cpfcnpj;
     private String email;
-    private String login;
-    private String senha;
+    private DocumentoCanonico documento;
+    private EnderecoCanonico endereco;
+    private List<TelefoneCanonico> telefones;
+    private AcessoCanonico acesso;
     private PerfilCanonico perfil;
+
+
+
+
 
 }

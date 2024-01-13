@@ -1,8 +1,8 @@
 package com.map.invest.mapInvest.service;
 
 import com.google.common.base.Strings;
-import com.map.invest.mapInvest.canonico.UsuarioCanonico;
-import com.map.invest.mapInvest.entity.Usuario;
+import com.map.invest.mapInvest.canonico.*;
+import com.map.invest.mapInvest.entity.*;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.repository.UsuarioRepositorio;
 import com.map.invest.mapInvest.util.validacao.CodigoUsuario;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -39,8 +40,8 @@ public class UsuarioService {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_USUARIO_JA_EXISTE.getValor());
         }
         validaDadosUsuario(usuario);
-        Long codUsuario = salvaUsuario(usuario);
-        return buscaUsuario(codUsuario);
+        Long usuarioSalvo = salvaUsuario(usuario);
+        return buscaUsuario(usuarioSalvo);
     }
 
     public Long editaUsuario(UsuarioCanonico usuarioCanonico) {
@@ -55,10 +56,7 @@ public class UsuarioService {
         usuario.setPerfilID(usuarioCanonico.getPerfilID());
         usuario.setNome(usuarioCanonico.getNome());
         usuario.setSobreNome(usuarioCanonico.getSobreNome());
-        usuario.setCpfcnpj(usuarioCanonico.getCpfcnpj());
         usuario.setEmail(usuarioCanonico.getEmail());
-        usuario.setLogin(usuarioCanonico.getLogin());
-        usuario.setSenha(usuarioCanonico.getSenha());
     }
 
     private Long salvaUsuario(UsuarioCanonico canonico) {
@@ -66,14 +64,59 @@ public class UsuarioService {
         usuario.setPerfilID(canonico.getPerfilID());
         usuario.setNome(canonico.getNome());
         usuario.setSobreNome(canonico.getSobreNome());
-        usuario.setCpfcnpj(canonico.getCpfcnpj());
         usuario.setEmail(canonico.getEmail());
-        usuario.setLogin(canonico.getLogin());
-        usuario.setSenha(canonico.getSenha());
         Usuario usuarioSalvo = usuarioRepositorio.salvaUsuario(usuario);
+        salvaDocumento(canonico, usuarioSalvo);
+        salvaEndereco(canonico, usuarioSalvo);
+        salvaTelefones(canonico, usuarioSalvo);
+        salvaAcesso(canonico, usuarioSalvo);
         return usuarioSalvo.getUsuarioID();
     }
 
+    private void salvaDocumento(UsuarioCanonico usuario, Usuario usuarioSalvo) {
+        Documento documento = new Documento();
+        documento.setTipoDocumento(usuario.getDocumento().getTipoDocumento());
+        documento.setNumeroDocumento(usuario.getDocumento().getNumeroDocumento());
+        documento.setUsuarioID(usuarioSalvo.getUsuarioID());
+        usuarioRepositorio.merge(documento);
+    }
+    private void salvaEndereco(UsuarioCanonico usuario, Usuario usuarioSalvo) {
+        Endereco endereco = new Endereco();
+        endereco.setUsuarioID(usuarioSalvo.getUsuarioID());
+        endereco.setTipoEndereco(usuario.getEndereco().getTipoEndereco());
+        endereco.setCep(usuario.getEndereco().getCep());
+        endereco.setRua(usuario.getEndereco().getRua());
+        endereco.setNumero(usuario.getEndereco().getNumero());
+        endereco.setComplemento(usuario.getEndereco().getComplemento());
+        endereco.setCidade(usuario.getEndereco().getCidade());
+        endereco.setUf(usuario.getEndereco().getUf());
+        usuarioRepositorio.merge(endereco);
+    }
+    private void salvaTelefones(UsuarioCanonico usuario, Usuario usuarioSalvo) {
+        Optional.ofNullable(usuario.getTelefones()).ifPresent(tel -> {
+            persisteTelefones(usuarioSalvo, tel);
+        });
+    }
+    private void persisteTelefones(Usuario usuarioSalvo, List<TelefoneCanonico> tel) {
+        List<Telefone> telefones = tel.stream().map(telefone -> montaTelefone(usuarioSalvo, telefone))
+                .collect(Collectors.toList());
+        usuarioSalvo.retemTelefone(telefones);
+    }
+    private Telefone montaTelefone(Usuario usuarioSalvo, TelefoneCanonico telefone) {
+        validaTelefone(telefone);
+        Telefone t = usuarioSalvo.novoTelefone(telefone.getTelefoneID());
+        t.setCodigo(telefone.getCodigo());
+        t.setTipoTelefone(telefone.getTipoTelefone());
+        t.setNumeroTelefone(telefone.getNumeroTelefone());
+        return t;
+    }
+    private void salvaAcesso(UsuarioCanonico usuario, Usuario usuarioSalvo) {
+        Acesso acesso = new Acesso();
+        acesso.setLogin(usuario.getAcesso().getLogin());
+        acesso.setSenha(usuario.getAcesso().getSenha());
+        acesso.setUsuarioID(usuarioSalvo.getUsuarioID());
+        usuarioRepositorio.merge(acesso);
+    }
     private Usuario geraUsuario(UsuarioCanonico canonico) {
         if (canonico.getUsuarioID() == null) {
             return new Usuario();
@@ -86,11 +129,16 @@ public class UsuarioService {
         validaPadraoLoginSenha(usuario, usuarioCanonico);
 
     }
+    private void validaCamposEndereco(EnderecoCanonico endereco) {
+    }
+
+    private void validaTelefone(TelefoneCanonico telefone) {
+    }
 
     private void validaDadosUsuario(UsuarioCanonico usuarioCanonico) {
         if (usuarioCanonico.getPerfilID() == null) {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_COD_PERFIL_OBRIGATORIO.getValor());
-        }
+        } //Validar se o perfilID Existe na base de dados
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getNome())) {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_NOME_OBRIGATORIO.getValor());
@@ -100,21 +148,9 @@ public class UsuarioService {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_SOBRENOME_OBRIGATORIO.getValor());
         }
 
-        if (Strings.isNullOrEmpty(usuarioCanonico.getCpfcnpj())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_CPF_CNPJ_OBRIGATORIO.getValor());
-        }
-
         if (Strings.isNullOrEmpty(usuarioCanonico.getEmail())) {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_EMAIL_OBRIGATORIO.getValor());
-        }
-
-        if (Strings.isNullOrEmpty(usuarioCanonico.getLogin())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_LOGIN_OBRIGATORIO.getValor());
-        }
-
-        if (Strings.isNullOrEmpty(usuarioCanonico.getSenha())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_SENHA_OBRIGATORIO.getValor());
-        }
+        } //Validar se o email Existe na base de dados
     }
 
     private void validaPadraoLoginSenha(Usuario usuario, UsuarioCanonico usuarioCanonico) {
