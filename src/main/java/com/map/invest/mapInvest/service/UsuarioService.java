@@ -55,10 +55,7 @@ public class UsuarioService {
         usuario.setPerfilID(usuarioCanonico.getPerfilID());
         usuario.setNome(usuarioCanonico.getNome());
         usuario.setSobreNome(usuarioCanonico.getSobreNome());
-        usuario.setCpfcnpj(usuarioCanonico.getCpfcnpj());
         usuario.setEmail(usuarioCanonico.getEmail());
-        usuario.setLogin(usuarioCanonico.getLogin());
-        usuario.setSenha(usuarioCanonico.getSenha());
     }
 
     private Long salvaUsuario(UsuarioCanonico canonico) {
@@ -66,10 +63,7 @@ public class UsuarioService {
         usuario.setPerfilID(canonico.getPerfilID());
         usuario.setNome(canonico.getNome());
         usuario.setSobreNome(canonico.getSobreNome());
-        usuario.setCpfcnpj(canonico.getCpfcnpj());
         usuario.setEmail(canonico.getEmail());
-        usuario.setLogin(canonico.getLogin());
-        usuario.setSenha(canonico.getSenha());
         Usuario usuarioSalvo = usuarioRepositorio.salvaUsuario(usuario);
         return usuarioSalvo.getUsuarioID();
     }
@@ -100,20 +94,8 @@ public class UsuarioService {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_SOBRENOME_OBRIGATORIO.getValor());
         }
 
-        if (Strings.isNullOrEmpty(usuarioCanonico.getCpfcnpj())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_CPF_CNPJ_OBRIGATORIO.getValor());
-        }
-
         if (Strings.isNullOrEmpty(usuarioCanonico.getEmail())) {
             throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_EMAIL_OBRIGATORIO.getValor());
-        }
-
-        if (Strings.isNullOrEmpty(usuarioCanonico.getLogin())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_LOGIN_OBRIGATORIO.getValor());
-        }
-
-        if (Strings.isNullOrEmpty(usuarioCanonico.getSenha())) {
-            throw new ValidacaoException(CodigoUsuario.ERRO_VALIDACAO_SENHA_OBRIGATORIO.getValor());
         }
     }
 

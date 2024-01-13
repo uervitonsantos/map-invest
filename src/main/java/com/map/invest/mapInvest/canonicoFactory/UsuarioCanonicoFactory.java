@@ -16,6 +16,18 @@ public class UsuarioCanonicoFactory {
     @Autowired
     private PerfilCanonicoFactory perfilCanonicoFactory;
 
+    @Autowired
+    private TelefoneCanonicoFactory telefoneCanonicoFactory;
+
+    @Autowired
+    private AcessoCanonicoFactory acessoCanonicoFactory;
+
+    @Autowired
+    private DocumentoCanonicoFactory documentoCanonicoFactory;
+
+    @Autowired
+    private EnderecoCanonicoFactory enderecoCanonicoFactory;
+
     public UsuarioCanonico builderUsuario(Usuario usuario) {
         return Optional.ofNullable(usuario).map(entidade -> {
             return UsuarioCanonico.builder()
@@ -23,11 +35,12 @@ public class UsuarioCanonicoFactory {
                     .perfilID(entidade.getPerfilID())
                     .nome(entidade.getNome())
                     .sobreNome(entidade.getSobreNome())
-                    .cpfcnpj(entidade.getCpfcnpj())
                     .email(entidade.getEmail())
-                    .login(entidade.getLogin())
-                    .senha(entidade.getSenha())
+                    .telefones(telefoneCanonicoFactory.telefoneCanonico(entidade.getTelefones()))
                     .perfil(perfilCanonicoFactory.builderPerfil(entidade.getPerfil()))
+                    .acesso(acessoCanonicoFactory.builderAcesso(entidade.getAcesso()))
+                    .documento(documentoCanonicoFactory.builderDocumento(entidade.getDocumento()))
+                    .enderecos(enderecoCanonicoFactory.enderecoCanonico(entidade.getEnderecos()))
                     .build();
         }).orElse(null);
     }

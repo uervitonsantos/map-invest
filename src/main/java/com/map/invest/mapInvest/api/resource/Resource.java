@@ -15,7 +15,6 @@ import java.util.*;
 import static jakarta.ws.rs.core.HttpHeaders.CONTENT_DISPOSITION;
 
 public interface Resource {
-
     public static final String RESPONSE_OK = "200";
     public static final String RESPONSE_BAD_REQUEST = "400";
     public static final String RESPONSE_NO_CONTENT = "204";
@@ -38,7 +37,7 @@ public interface Resource {
     public static final String P_LOGIN = "login";
 
 
-    default ResponseBuilder espostaPaginada(FiltroWrapper wrapper) {
+    default ResponseBuilder respostaPaginada(FiltroWrapper wrapper) {
         return respostaPaginada(wrapper.getPaginacaoOptional());
     }
 

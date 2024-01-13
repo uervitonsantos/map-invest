@@ -52,8 +52,8 @@ public class UsuarioRepositorio extends MapInvestRepositorio {
             filtro.getPaginacao().setTotalRegistros(qtdRegistros);
             CriteriaQuery<Long> criteria = criteriaQuery(Long.class);
             Root<Usuario> root = criteria.from(Usuario.class);
-            criteria.distinct(true).select(root.get("usuarioID"))
-                    .where(aplicaFiltros(root, usuarioFiltro, false)).orderBy(asc(root.get("usuarioID")));
+            criteria.distinct(true).select(root.get(Usuario_.usuarioID))
+                    .where(aplicaFiltros(root, usuarioFiltro, false)).orderBy(asc(root.get(Usuario_.usuarioID)));
             List<Long> resultado = paginarResultado(criteria, filtro);
             if (resultado.isEmpty()) {
                 return Lists.newArrayList();
@@ -75,7 +75,7 @@ public class UsuarioRepositorio extends MapInvestRepositorio {
     private Long countRegistros(UsuarioFiltro usuarioFiltro) {
         CriteriaQuery<Long> criteria = criteriaQuery(Long.class);
         Root<Usuario> root = criteria.from(Usuario.class);
-        criteria.select(criteriaBuilder().countDistinct(root.get("usuarioID")))
+        criteria.select(criteriaBuilder().countDistinct(root.get(Usuario_.usuarioID)))
                 .where(aplicaFiltros(root, usuarioFiltro, false));
         return typedQuery(criteria).getSingleResult();
     }
@@ -85,10 +85,10 @@ public class UsuarioRepositorio extends MapInvestRepositorio {
         List<Predicate> predicates = Lists.newArrayList();
 
         if (usuarioFiltro.hasUsuarioID()) {
-            predicates.add(root.get("usuarioID").in(usuarioFiltro.getUsuarioID()));
+            predicates.add(root.get(Usuario_.usuarioID).in(usuarioFiltro.getUsuarioID()));
         }
         if (usuarioFiltro.hasPerfilID()) {
-            predicates.add(root.get("perfilID").in(usuarioFiltro.getPerfilID()));
+            predicates.add(root.get(Usuario_.perfilID).in(usuarioFiltro.getPerfilID()));
         }
         if (usuarioFiltro.hasCodPerfil()) {
             predicates.add(builder.like(builder.upper(root.get("CodPerfil")),
