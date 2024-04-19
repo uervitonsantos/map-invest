@@ -13,6 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "ACESSO")
+@NamedQuery(name = "Acesso.buscaPorLogin", query = "SELECT p FROM Acesso p WHERE p.login = :plogin")
 public class Acesso implements Serializable {
 
     @Id

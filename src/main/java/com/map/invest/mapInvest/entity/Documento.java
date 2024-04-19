@@ -15,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "DOCUMENTO")
+@NamedQuery(name = "Documento.buscaPorNumeroDocumento", query = "SELECT p FROM Documento p WHERE p.numeroDocumento = :pnumeroDocumento")
 public class Documento implements Serializable {
 
     @Id

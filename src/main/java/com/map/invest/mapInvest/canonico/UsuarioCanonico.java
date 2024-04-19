@@ -1,6 +1,5 @@
 package com.map.invest.mapInvest.canonico;
 
-import com.map.invest.mapInvest.entity.Endereco;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +21,6 @@ public class UsuarioCanonico {
     private List<TelefoneCanonico> telefones;
     private AcessoCanonico acesso;
     private PerfilCanonico perfil;
-
-
-
 
 
 }

@@ -36,7 +36,8 @@ public class Telefone implements Serializable {
     @Column(name = "NUMERO_TELEFONE")
     private String numeroTelefone;
 
-    @ManyToMany(mappedBy = "telefones", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "telefones", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE,
+            CascadeType.MERGE})
     private List<Usuario> usuarios;
 
 }

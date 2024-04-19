@@ -7,6 +7,7 @@ import com.map.invest.mapInvest.dtoFactory.UsuarioDTOFactory;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.filtroDTO.UsuarioFiltroDTO;
 import com.map.invest.mapInvest.resource.UsuarioResource;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.BeanParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

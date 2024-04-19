@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "USUARIO")
+@NamedQuery(name = "Usuario.buscaPorEmail", query = "SELECT p FROM Usuario p WHERE p.email = :pemail")
 public class Usuario implements Serializable {
 
     @Id
@@ -35,39 +36,37 @@ public class Usuario implements Serializable {
     private String sobreNome;
 
     @Column(name = "EMAIL")
-    @NotBlank(message = "Email é obrigatório")
-    @Email(message = "Email inválido")
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
-            CascadeType.MERGE }, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE,
+            CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
     private Documento documento;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
-            CascadeType.MERGE }, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE,
+            CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
     private Endereco endereco;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
-            CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE,
+            CascadeType.MERGE})
     @JoinTable(name = "USUARIO_TELEFONE",
             joinColumns = @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "TELEFONE_USUARIO_ID", referencedColumnName = "TELEFONE_ID", insertable = false, updatable = false))
     private List<Telefone> telefones;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
-            CascadeType.MERGE }, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE,
+            CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
     private Acesso acesso;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
-            CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE,
+            CascadeType.MERGE})
     @JoinColumn(name = "PERFIL_ID", referencedColumnName = "PERFIL_ID", insertable = false, updatable = false)
     private Perfil perfil;
 
     public void retemTelefone(List<Telefone> telefones) {
-        if(telefones == null){
+        if (telefones == null) {
             return;
         }
         this.telefones.retainAll(telefones);

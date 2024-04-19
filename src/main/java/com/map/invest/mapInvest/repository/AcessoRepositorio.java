@@ -4,7 +4,10 @@ import com.map.invest.mapInvest.canonico.AcessoCanonico;
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.canonicoFactory.AcessoCanonicoFactory;
 import com.map.invest.mapInvest.entity.Acesso;
+import com.map.invest.mapInvest.entity.Documento;
 import com.map.invest.mapInvest.entity.Usuario;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -25,5 +28,15 @@ public class AcessoRepositorio extends MapInvestRepositorio {
         return Optional.ofNullable(acesso).map(e -> {
             return acessoCanonicoFactory.builderAcesso(e);
         }).orElse(null);
+    }
+
+    public Acesso buscarAcessoPorLogin(String login) {
+        TypedQuery<Acesso> query = getEntityManager().createNamedQuery("Acesso.buscaPorLogin", Acesso.class);
+        query.setParameter("plogin", login);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

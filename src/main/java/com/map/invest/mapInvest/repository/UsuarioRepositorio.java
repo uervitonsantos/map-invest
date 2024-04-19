@@ -3,12 +3,12 @@ package com.map.invest.mapInvest.repository;
 import com.google.common.collect.Lists;
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.canonicoFactory.UsuarioCanonicoFactory;
+import com.map.invest.mapInvest.entity.Acesso;
 import com.map.invest.mapInvest.entity.Usuario;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.filtro.UsuarioFiltro;
 import com.map.invest.mapInvest.metamodel.Usuario_;
-import com.map.invest.mapInvest.util.validacao.CodigoUsuario;
-import com.map.invest.mapInvest.util.validacao.exception.ValidacaoException;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -17,7 +17,6 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,10 +35,6 @@ public class UsuarioRepositorio extends MapInvestRepositorio {
         return Optional.ofNullable(usuario).map(u -> {
             return usuarioCanonicoFactory.builderUsuario(u);
         }).orElse(null);
-    }
-
-    private Arrays buscaUsuariosCanonico(FiltroWrapper filtroWrapper) {
-        return null;
     }
 
     public List<UsuarioCanonico> buscaUsuarios(FiltroWrapper filtro) {
@@ -99,5 +94,15 @@ public class UsuarioRepositorio extends MapInvestRepositorio {
 
     public Usuario salvaUsuario(Usuario usuario) {
         return merge(usuario);
+    }
+
+    public Usuario buscarPorEmail(String email) {
+        TypedQuery<Usuario> query = getEntityManager().createNamedQuery("Usuario.buscaPorEmail", Usuario.class);
+        query.setParameter("pemail", email);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
