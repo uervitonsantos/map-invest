@@ -1,13 +1,13 @@
 package com.map.invest.mapInvest.canonico;
 
 import com.map.invest.mapInvest.util.constantes.TipoEnderecoEnum;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EnderecoCanonico {
 
     private Long enderecoID;

@@ -1,19 +1,23 @@
 package com.map.invest.mapInvest.util.constantes;
 
-public enum TipoTelefoneEnum {
+public enum TipoPerfilEnum {
 
-    RESIDENCIAL("RES"), CELULAR("CEL"), COMERCIAL("COM");
+    ADMINISTRADOR("Administrador"),
+    MASTER("Master"),
+    MADIO("Medio"),
+    BASICO("Basico")
+    ;
     private final String valor;
 
-    private TipoTelefoneEnum(String valor) {
+    private TipoPerfilEnum(String valor) {
         this.valor = valor;
     }
     public String getValor() {
         return valor;
     }
 
-    public static TipoTelefoneEnum findByCodigo(String valor) {
-        for (TipoTelefoneEnum value : TipoTelefoneEnum.values()) {
+    public static TipoPerfilEnum findByCodigo(String valor) {
+        for (TipoPerfilEnum value : TipoPerfilEnum.values()) {
             if (value.getValor().equalsIgnoreCase(valor.trim())) {
                 return value;
             }

@@ -47,7 +47,9 @@ public enum MapInvestMensagens {
     ERRO_VALIDACAO_COD_TELEFONE_NAO_EXISTE("Código do telefone não existe na base de dados"),
     ERRO_VALIDACAO_NUMERO_TELEFONE_OBRIGATORIO("Obrigatório informar o número do telefone"),
     ERRO_VALIDACAO_EMAIL_CARACTERES_INVALIDOS("Erro ao validar o email. Caracteres invalidos"),
-    ERRO_VALIDACAO_NUM_DOCUMENTO_JA_EXISTE("Número do documento já cadastrada na base de dados");
+    ERRO_VALIDACAO_NUM_DOCUMENTO_JA_EXISTE("Número do documento já cadastrada na base de dados"),
+    ERRO_VALIDACAO_DATA_NASCIMENTO_OBRIGATORIO("Obrigatório informar a data de nascimento do usuario"),
+    ERRO_VALIDACAO_SEXO_OBRIGATORIO("Obrigatório informar o sexo do usuario");
 
 
     private final String valor;

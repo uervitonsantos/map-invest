@@ -7,13 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table(name = "ACESSO")
-@NamedQuery(name = "Acesso.buscaPorLogin", query = "SELECT p FROM Acesso p WHERE p.login = :plogin")
+@NamedQueries({@NamedQuery(name = "Acesso.buscaPorLogin", query = "SELECT p FROM Acesso p WHERE p.login = :plogin"),})
+
 public class Acesso implements Serializable {
 
     @Id
@@ -25,9 +27,22 @@ public class Acesso implements Serializable {
     @Column(name = "USUARIO_ID")
     private Long usuarioID;
 
+    @Column(name = "PERFIL_ID")
+    private Long perfilID;
+
     @Column(name = "LOGIN_USUARIO")
     private String login;
 
     @Column(name = "SENHA_USUARIO")
     private String senha;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @JoinColumn(name = "PERFIL_ID", referencedColumnName = "PERFIL_ID", insertable = false, updatable = false)
+    private Perfil perfis;
+
 }
+

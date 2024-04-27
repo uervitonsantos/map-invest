@@ -33,4 +33,8 @@ public class Documento implements Serializable {
     @Column(name = "NUMERO_DOCUMENTO")
     private String numeroDocumento;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
+    private Usuario usuario;
+
 }

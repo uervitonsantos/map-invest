@@ -14,9 +14,6 @@ import java.util.stream.Collectors;
 public class UsuarioCanonicoFactory {
 
     @Autowired
-    private PerfilCanonicoFactory perfilCanonicoFactory;
-
-    @Autowired
     private TelefoneCanonicoFactory telefoneCanonicoFactory;
 
     @Autowired
@@ -32,15 +29,15 @@ public class UsuarioCanonicoFactory {
         return Optional.ofNullable(usuario).map(entidade -> {
             return UsuarioCanonico.builder()
                     .usuarioID(entidade.getUsuarioID())
-                    .perfilID(entidade.getPerfilID())
                     .nome(entidade.getNome())
                     .sobreNome(entidade.getSobreNome())
+                    .dataNascimento(entidade.getDataNascimento())
+                    .sexo(entidade.getSexo())
                     .email(entidade.getEmail())
                     .documento(documentoCanonicoFactory.builderDocumento(entidade.getDocumento()))
                     .endereco(enderecoCanonicoFactory.builderEndereco(entidade.getEndereco()))
                     .telefones(telefoneCanonicoFactory.telefoneCanonico(entidade.getTelefones()))
                     .acesso(acessoCanonicoFactory.builderAcesso(entidade.getAcesso()))
-                    .perfil(perfilCanonicoFactory.builderPerfil(entidade.getPerfil()))
                     .build();
         }).orElse(null);
     }

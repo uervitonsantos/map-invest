@@ -178,7 +178,6 @@ public abstract class AbstractRepositorio {
     public StoredProcedureQuery storedProcedureQuery(String storedProcedure) {
         return getEntityManager().createStoredProcedureQuery(storedProcedure);
     }
-
     public <T, ID> T busca(Class<T> clazz, ID id) {
         if (id == null) {
             return null;

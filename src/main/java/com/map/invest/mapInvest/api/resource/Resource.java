@@ -33,6 +33,7 @@ public interface Resource {
     public static final String P_NOME = "nome";
     public static final String P_SOBRENOME = "sobreNome";
     public static final String P_CPFCNPJ = "cpfcnpj";
+    public static final String ACESSO = "Acesso";
     public static final String P_EMAIL = "email";
     public static final String P_LOGIN = "login";
 

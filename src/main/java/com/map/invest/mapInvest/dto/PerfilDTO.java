@@ -1,5 +1,6 @@
 package com.map.invest.mapInvest.dto;
 
+import com.map.invest.mapInvest.util.constantes.TipoPerfilEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ public class PerfilDTO {
 
     private Long perfilID;
     private String codPerfil;
-    private String nomePerfil;
+    private TipoPerfilEnum nomePerfil;
     private String descricao;
     private List<PermissaoTelaDTO> permissaoTelas;
 

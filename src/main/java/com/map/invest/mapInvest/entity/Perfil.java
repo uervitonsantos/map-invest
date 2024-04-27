@@ -1,5 +1,6 @@
 package com.map.invest.mapInvest.entity;
 
+import com.map.invest.mapInvest.util.constantes.TipoPerfilEnum;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,11 +21,14 @@ public class Perfil implements MapInvestEntity {
     @Column(name = "PERFIL_ID")
     private Long perfilID;
 
+    @Column(name = "ACESSO_ID")
+    private Long acessoID;
+
     @Column(name = "SIG_PERFIL")
     private String codPerfil;
 
     @Column(name = "NOME_PERFIL")
-    private String nomePerfil;
+    private TipoPerfilEnum nomePerfil;
 
     @Column(name = "DESCRICAO")
     private String descricao;
@@ -35,5 +39,6 @@ public class Perfil implements MapInvestEntity {
             inverseJoinColumns = @JoinColumn(name = "PERMISSAO_TELA_ID", referencedColumnName = "PERMISSAOTELA_ID", insertable = false, updatable = false))
     private List<PermissaoTela> permissaoTelas;
 
-
+    @ManyToMany(mappedBy = "perfis", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    private List<Acesso> acessos;
 }

@@ -47,4 +47,7 @@ public class Endereco implements Serializable {
     @Column(name = "UF")
     private String uf;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
+    private Usuario usuario;
 }

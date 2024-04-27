@@ -3,7 +3,7 @@ package com.map.invest.mapInvest.util.constantes;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum TipoEnderecoEnum {
-    COMERCIAL("com"), RESIDENCIAL("res");
+    COMERCIAL("COM"), RESIDENCIAL("RES");
 
     private final String valor;
 

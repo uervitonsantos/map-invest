@@ -49,4 +49,10 @@ public class PerfilDTOFactory {
         }).orElse(null);
     }
 
+    public List<PerfilCanonico> perfisCanonico(List<PerfilDTO> resultList) {
+        return Optional.ofNullable(resultList).map(lista -> {
+            return lista.stream().map(el -> perfilCanonico(el)).collect(Collectors.toList());
+        }).orElse(new ArrayList<>());
+    }
+
 }

@@ -1,12 +1,12 @@
 package com.map.invest.mapInvest.canonico;
 
 import com.map.invest.mapInvest.util.constantes.TipoDocumentoEnum;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class DocumentoCanonico {
 

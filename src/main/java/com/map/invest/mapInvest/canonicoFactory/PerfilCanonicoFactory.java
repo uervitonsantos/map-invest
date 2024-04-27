@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -20,6 +21,7 @@ public class PerfilCanonicoFactory {
         return Optional.ofNullable(perfil).map(entidade -> {
             return PerfilCanonico.builder()
                     .perfilID(entidade.getPerfilID())
+                    .acessoID(entidade.getAcessoID())
                     .codPerfil(entidade.getCodPerfil())
                     .nomePerfil(entidade.getNomePerfil())
                     .descricao(entidade.getDescricao())
@@ -28,7 +30,7 @@ public class PerfilCanonicoFactory {
         }).orElse(null);
     }
 
-    public List<PerfilCanonico> perfisCanonico(List<Perfil> resultList) {
+    public List<PerfilCanonico> perfisCanonico(Set<Perfil> resultList) {
         return Optional.ofNullable(resultList).map(lista -> {
             return lista.stream().map(el -> builderPerfil(el)).collect(Collectors.toList());
         }).orElse(new ArrayList<>());

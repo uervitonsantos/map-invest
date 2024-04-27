@@ -17,6 +17,7 @@ import com.map.invest.mapInvest.util.constantes.TipoTelefoneEnum;
 import com.map.invest.mapInvest.util.validacao.MapInvestMensagens;
 import com.map.invest.mapInvest.util.validacao.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,7 +32,6 @@ public class UsuarioService {
     private static final int MIN_TAMANHO_SENHA = 8;
     private static final int MAX_TAMANHO_SENHA = 50;
     private static final Pattern SENHA_REGEX = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*-+])[\\w~!@#$%^&*-+]{8,}$");
-    private static final Pattern LOGIN_REGEX = Pattern.compile("^[a-z0-9_]+$");
     private static final Pattern EMAIL_REGEX = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
@@ -47,6 +47,11 @@ public class UsuarioService {
 
     @Autowired
     private PerfilRepositorio perfilRepositorio;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public UsuarioService() {
+    }
 
     public UsuarioCanonico buscaUsuario(Long usuarioID) {
         return Optional.ofNullable(usuarioRepositorio.buscaUsuario(usuarioID)).orElseThrow(
@@ -81,7 +86,7 @@ public class UsuarioService {
 
     private void validaEmailUsuario(UsuarioCanonico usuario) {
         Usuario userEmail = usuarioRepositorio.buscarPorEmail(usuario.getEmail());
-        if(userEmail != null){
+        if (userEmail != null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_EMAIL_JA_EXISTE.getValor());
         }
     }
@@ -95,7 +100,7 @@ public class UsuarioService {
 
     private void validaLoginUsuario(UsuarioCanonico usuario) {
         Acesso acesso = acessoRepositorio.buscarAcessoPorLogin(usuario.getAcesso().getLogin());
-        if(acesso != null){
+        if (acesso != null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_JA_EXISTE.getValor());
         }
     }
@@ -109,9 +114,10 @@ public class UsuarioService {
     }
 
     private void popularUsuario(Usuario usuario, UsuarioCanonico usuarioCanonico) {
-        usuario.setPerfilID(usuarioCanonico.getPerfilID());
         usuario.setNome(usuarioCanonico.getNome());
         usuario.setSobreNome(usuarioCanonico.getSobreNome());
+        usuario.setDataNascimento(usuarioCanonico.getDataNascimento());
+        usuario.setSexo(usuarioCanonico.getSexo());
         usuario.setEmail(usuarioCanonico.getEmail());
         popularDocumento(usuario, usuarioCanonico.getDocumento());
         popularEndereco(usuario, usuarioCanonico.getEndereco());
@@ -206,15 +212,18 @@ public class UsuarioService {
             acesso.setUsuarioID(usuario.getUsuarioID());
             usuario.setAcesso(acesso);
         }
+        acesso.setPerfilID(acessoCanonico.getPerfilID());
         acesso.setLogin(acessoCanonico.getLogin());
-        acesso.setSenha(acessoCanonico.getSenha());
+        String senhaCriptografada = passwordEncoder.encode(acessoCanonico.getSenha());
+        acesso.setSenha(senhaCriptografada);
     }
 
     private Long salvaUsuario(UsuarioCanonico canonico) {
         Usuario usuario = geraUsuario(canonico);
-        usuario.setPerfilID(canonico.getPerfilID());
         usuario.setNome(canonico.getNome());
         usuario.setSobreNome(canonico.getSobreNome());
+        usuario.setDataNascimento(canonico.getDataNascimento());
+        usuario.setSexo(canonico.getSexo());
         usuario.setEmail(canonico.getEmail());
         Usuario usuarioSalvo = usuarioRepositorio.salvaUsuario(usuario);
         salvaDocumento(canonico, usuarioSalvo);
@@ -226,9 +235,9 @@ public class UsuarioService {
 
     private void salvaDocumento(UsuarioCanonico usuario, Usuario usuarioSalvo) {
         Documento documento = new Documento();
+        documento.setUsuarioID(usuarioSalvo.getUsuarioID());
         documento.setTipoDocumento(usuario.getDocumento().getTipoDocumento());
         documento.setNumeroDocumento(usuario.getDocumento().getNumeroDocumento());
-        documento.setUsuarioID(usuarioSalvo.getUsuarioID());
         usuarioRepositorio.merge(documento);
     }
 
@@ -266,9 +275,11 @@ public class UsuarioService {
 
     private void salvaAcesso(UsuarioCanonico usuario, Usuario usuarioSalvo) {
         Acesso acesso = new Acesso();
-        acesso.setLogin(usuario.getAcesso().getLogin());
-        acesso.setSenha(usuario.getAcesso().getSenha());
         acesso.setUsuarioID(usuarioSalvo.getUsuarioID());
+        acesso.setPerfilID(usuario.getAcesso().getPerfilID());
+        acesso.setLogin(usuario.getAcesso().getLogin());
+        String senhaCriptografada = passwordEncoder.encode(usuario.getAcesso().getSenha());
+        acesso.setSenha(senhaCriptografada);
         usuarioRepositorio.merge(acesso);
     }
 
@@ -289,20 +300,21 @@ public class UsuarioService {
         List<TelefoneCanonico> telefoneCanonico = usuarioCanonico.getTelefones();
         AcessoCanonico acessoCanonico = usuarioCanonico.getAcesso();
 
-        if (usuarioCanonico.getPerfilID() == null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COD_PERFIL_OBRIGATORIO.getValor());
-        } else {
-            PerfilCanonico perfil = perfilRepositorio.buscaPerfil(usuarioCanonico.getPerfilID());
-            if (perfil == null){
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COD_PERFIL_NAO_EXISTE.getValor());
-            }
-        }
+
         if (Strings.isNullOrEmpty(usuarioCanonico.getNome())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NOME_OBRIGATORIO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getSobreNome())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_SOBRENOME_OBRIGATORIO.getValor());
+        }
+
+        if (usuarioCanonico.getDataNascimento() == null) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_DATA_NASCIMENTO_OBRIGATORIO.getValor());
+        }
+
+        if (Strings.isNullOrEmpty(usuarioCanonico.getSexo())) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_SEXO_OBRIGATORIO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getEmail())) {
@@ -326,6 +338,14 @@ public class UsuarioService {
         if (acessoCanonico == null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_ACESSO_OBRIGATORIO.getValor());
         }
+        if (acessoCanonico.getPerfilID() == null) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COD_PERFIL_OBRIGATORIO.getValor());
+        } else {
+            PerfilCanonico perfil = perfilRepositorio.buscaPerfil(acessoCanonico.getPerfilID());
+            if (perfil == null) {
+                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COD_PERFIL_NAO_EXISTE.getValor());
+            }
+        }
         if (Strings.isNullOrEmpty(acessoCanonico.getLogin())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_OBRIGATORIO.getValor());
         } else {
@@ -334,9 +354,6 @@ public class UsuarioService {
             }
             if (acessoCanonico.getLogin().length() > MAX_TAMANHO_LOGIN) {
                 throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_TAMANHO_MAX_INSUFICIENTE.getValor());
-            }
-            if (!LOGIN_REGEX.matcher(acessoCanonico.getLogin()).matches()) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_CARACTERES_INVALIDOS.getValor());
             }
         }
         if (Strings.isNullOrEmpty(acessoCanonico.getSenha())) {
@@ -410,12 +427,11 @@ public class UsuarioService {
         if (enderecoCanonico == null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_ENDERECO_OBRIGATORIO.getValor());
         }
-        if (enderecoCanonico.getTipoEndereco() == null) {
+        TipoEnderecoEnum tipo = enderecoCanonico.getTipoEndereco();
+        if (tipo == null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_ENDERECO_OBRIGATORIO.getValor());
         } else {
-            try {
-                TipoEnderecoEnum.valueOf(String.valueOf(enderecoCanonico.getTipoEndereco()));
-            } catch (IllegalArgumentException e) {
+            if(!tipo.equals(TipoEnderecoEnum.RESIDENCIAL) && !tipo.equals(TipoEnderecoEnum.COMERCIAL)){
                 throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_ENDERECO_INVALIDO.getValor());
             }
         }
@@ -443,11 +459,11 @@ public class UsuarioService {
         if (documentoCanonico == null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_DOCUMENTO_OBRIGATORIO.getValor());
         } else {
-            if (documentoCanonico.getTipoDocumento() == null) {
+            TipoDocumentoEnum tipo = documentoCanonico.getTipoDocumento();
+            if (tipo == null) {
                 throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_DOCUMENTO_OBRIGATORIO.getValor());
             }
-            TipoDocumentoEnum tipo = TipoDocumentoEnum.findByCodigo(String.valueOf(documentoCanonico.getTipoDocumento()));
-            if (tipo == null) {
+            if (!tipo.equals(TipoDocumentoEnum.CPF) && !tipo.equals(TipoDocumentoEnum.CNPJ)){
                 throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_DOCUMENTO_INVALIDO.getValor());
             }
             if (Strings.isNullOrEmpty(documentoCanonico.getNumeroDocumento())) {

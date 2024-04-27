@@ -3,7 +3,6 @@ package com.map.invest.mapInvest.repository;
 import com.google.common.collect.Lists;
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.canonicoFactory.UsuarioCanonicoFactory;
-import com.map.invest.mapInvest.entity.Acesso;
 import com.map.invest.mapInvest.entity.Usuario;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.filtro.UsuarioFiltro;
@@ -16,6 +15,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -105,4 +105,5 @@ public class UsuarioRepositorio extends MapInvestRepositorio {
             return null;
         }
     }
+
 }
