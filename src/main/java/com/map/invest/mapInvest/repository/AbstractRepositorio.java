@@ -11,7 +11,6 @@ import jakarta.persistence.metamodel.SingularAttribute;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -178,6 +177,7 @@ public abstract class AbstractRepositorio {
     public StoredProcedureQuery storedProcedureQuery(String storedProcedure) {
         return getEntityManager().createStoredProcedureQuery(storedProcedure);
     }
+
     public <T, ID> T busca(Class<T> clazz, ID id) {
         if (id == null) {
             return null;

@@ -15,9 +15,11 @@ public enum CampoOrdenacao {
     NUM_ENCA("numEnca"),
     ;
     private String valor;
+
     private CampoOrdenacao(String valor) {
         this.valor = valor;
     }
+
     public String getValor() {
         return valor;
     }

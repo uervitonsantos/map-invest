@@ -8,6 +8,7 @@ public enum TipoTelefoneEnum {
     private TipoTelefoneEnum(String valor) {
         this.valor = valor;
     }
+
     public String getValor() {
         return valor;
     }

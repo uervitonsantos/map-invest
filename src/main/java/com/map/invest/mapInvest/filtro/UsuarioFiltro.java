@@ -1,7 +1,6 @@
 package com.map.invest.mapInvest.filtro;
 
 
-import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.util.List;

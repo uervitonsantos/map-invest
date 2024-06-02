@@ -1,6 +1,5 @@
 package com.map.invest.mapInvest.util.converter;
 
-import com.map.invest.mapInvest.util.constantes.TipoTelefoneEnum;
 import com.map.invest.mapInvest.util.validacao.MapInvestMensagens;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

@@ -1,9 +1,7 @@
 package com.map.invest.mapInvest.dtoFactory;
 
 import com.map.invest.mapInvest.canonico.DocumentoCanonico;
-import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.dto.DocumentoDTO;
-import com.map.invest.mapInvest.dto.UsuarioDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

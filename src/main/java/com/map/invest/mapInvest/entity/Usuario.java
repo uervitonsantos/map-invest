@@ -1,5 +1,6 @@
 package com.map.invest.mapInvest.entity;
 
+import com.map.invest.mapInvest.util.constantes.SexoEnum;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class Usuario implements Serializable {
     private LocalDate dataNascimento;
 
     @Column(name = "SEXO")
-    private String sexo; // Será um Enum M/F
+    private SexoEnum sexo;
 
     @Column(name = "EMAIL")
     private String email;
@@ -52,6 +53,9 @@ public class Usuario implements Serializable {
 
     @OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     private Acesso acesso;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+    private List<Auditoria> auditoria;
 
     public void retemTelefone(List<Telefone> telefones) {
         if (telefones == null) {

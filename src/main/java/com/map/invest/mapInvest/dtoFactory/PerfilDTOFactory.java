@@ -2,9 +2,7 @@ package com.map.invest.mapInvest.dtoFactory;
 
 
 import com.map.invest.mapInvest.canonico.PerfilCanonico;
-import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.dto.PerfilDTO;
-import com.map.invest.mapInvest.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

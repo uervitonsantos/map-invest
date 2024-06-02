@@ -1,6 +1,7 @@
 package com.map.invest.mapInvest.dtoFactory;
 
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
+import com.map.invest.mapInvest.canonicoFactory.AuditoriaCanonicoFactory;
 import com.map.invest.mapInvest.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,8 @@ public class UsuarioDTOFactory {
     private DocumentoDTOFactory documentoDTOFactory;
     @Autowired
     private EnderecoDTOFactory enderecoDTOFactory;
+    @Autowired
+    private AuditoriaDTOFactory auditoriaDTOFactory;
 
     public UsuarioDTO usuarioDto(UsuarioCanonico usuario) {
         return Optional.ofNullable(usuario).map(canonico -> {
@@ -35,6 +38,7 @@ public class UsuarioDTOFactory {
                     .endereco(enderecoDTOFactory.enderecoDto(canonico.getEndereco()))
                     .telefones(telefoneDTOFactory.telefonesDTO(canonico.getTelefones()))
                     .acesso(acessoDTOFactory.acessoDto(canonico.getAcesso()))
+                    .auditoria(auditoriaDTOFactory.auditoriasDto(canonico.getAuditoria()))
                     .build();
         }).orElse(null);
     }

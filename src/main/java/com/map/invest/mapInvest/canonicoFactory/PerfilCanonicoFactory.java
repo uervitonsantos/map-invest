@@ -21,7 +21,6 @@ public class PerfilCanonicoFactory {
         return Optional.ofNullable(perfil).map(entidade -> {
             return PerfilCanonico.builder()
                     .perfilID(entidade.getPerfilID())
-                    .acessoID(entidade.getAcessoID())
                     .codPerfil(entidade.getCodPerfil())
                     .nomePerfil(entidade.getNomePerfil())
                     .descricao(entidade.getDescricao())

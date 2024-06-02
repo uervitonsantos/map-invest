@@ -1,19 +1,13 @@
 package com.map.invest.mapInvest.service;
 
 import com.google.common.base.Strings;
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 import com.map.invest.mapInvest.canonico.*;
 import com.map.invest.mapInvest.entity.*;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
-import com.map.invest.mapInvest.repository.AcessoRepositorio;
 import com.map.invest.mapInvest.repository.DocumentoRepositorio;
-import com.map.invest.mapInvest.repository.PerfilRepositorio;
+import com.map.invest.mapInvest.repository.EnderecoRepositorio;
 import com.map.invest.mapInvest.repository.UsuarioRepositorio;
-import com.map.invest.mapInvest.util.constantes.TipoDocumentoEnum;
-import com.map.invest.mapInvest.util.constantes.TipoEnderecoEnum;
-import com.map.invest.mapInvest.util.constantes.TipoTelefoneEnum;
+import com.map.invest.mapInvest.util.constantes.SexoEnum;
 import com.map.invest.mapInvest.util.validacao.MapInvestMensagens;
 import com.map.invest.mapInvest.util.validacao.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,32 +20,24 @@ import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
-    private static final int MAX_TAMANHO_CODIGO_TELEFONE = 2;
-    private static final int MIN_TAMANHO_LOGIN = 10;
-    private static final int MAX_TAMANHO_LOGIN = 20;
-    private static final int MIN_TAMANHO_SENHA = 8;
-    private static final int MAX_TAMANHO_SENHA = 50;
-    private static final Pattern SENHA_REGEX = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*-+])[\\w~!@#$%^&*-+]{8,}$");
+
     private static final Pattern EMAIL_REGEX = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
-
+    @Autowired
+    private DocumentoService documentoService;
     @Autowired
     private DocumentoRepositorio documentoRepositorio;
-
+    @Autowired
+    private EnderecoRepositorio enderecoRepositorio;
     @Autowired
     private TelefoneService telefoneService;
-
     @Autowired
-    private AcessoRepositorio acessoRepositorio;
-
+    private AcessoService acessoService;
     @Autowired
-    private PerfilRepositorio perfilRepositorio;
+    private EnderecoService enderecoService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    public UsuarioService() {
-    }
 
     public UsuarioCanonico buscaUsuario(Long usuarioID) {
         return Optional.ofNullable(usuarioRepositorio.buscaUsuario(usuarioID)).orElseThrow(
@@ -70,8 +56,8 @@ public class UsuarioService {
     public UsuarioCanonico criaUsuario(UsuarioCanonico usuario) {
         validaIdUsuario(usuario);
         validaEmailUsuario(usuario);
-        validaNumDocumento(usuario);
-        validaLoginUsuario(usuario);
+        documentoService.validaNumDocumento(usuario);
+        acessoService.validaLoginUsuario(usuario);
         validaDadosUsuario(usuario);
         Long usuarioSalvo = salvaUsuario(usuario);
         return buscaUsuario(usuarioSalvo);
@@ -88,20 +74,6 @@ public class UsuarioService {
         Usuario userEmail = usuarioRepositorio.buscarPorEmail(usuario.getEmail());
         if (userEmail != null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_EMAIL_JA_EXISTE.getValor());
-        }
-    }
-
-    private void validaNumDocumento(UsuarioCanonico usuario) {
-        Documento documento = documentoRepositorio.buscarDocumentoPorNumero(usuario.getDocumento().getNumeroDocumento());
-        if (documento != null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUM_DOCUMENTO_JA_EXISTE.getValor());
-        }
-    }
-
-    private void validaLoginUsuario(UsuarioCanonico usuario) {
-        Acesso acesso = acessoRepositorio.buscarAcessoPorLogin(usuario.getAcesso().getLogin());
-        if (acesso != null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_JA_EXISTE.getValor());
         }
     }
 
@@ -233,12 +205,12 @@ public class UsuarioService {
         return usuarioSalvo.getUsuarioID();
     }
 
-    private void salvaDocumento(UsuarioCanonico usuario, Usuario usuarioSalvo) {
+    private void salvaDocumento(UsuarioCanonico canonico, Usuario usuarioSalvo) {
         Documento documento = new Documento();
         documento.setUsuarioID(usuarioSalvo.getUsuarioID());
-        documento.setTipoDocumento(usuario.getDocumento().getTipoDocumento());
-        documento.setNumeroDocumento(usuario.getDocumento().getNumeroDocumento());
-        usuarioRepositorio.merge(documento);
+        documento.setTipoDocumento(canonico.getDocumento().getTipoDocumento());
+        documento.setNumeroDocumento(canonico.getDocumento().getNumeroDocumento());
+        documentoRepositorio.merge(documento);
     }
 
     private void salvaEndereco(UsuarioCanonico usuario, Usuario usuarioSalvo) {
@@ -251,7 +223,7 @@ public class UsuarioService {
         endereco.setComplemento(usuario.getEndereco().getComplemento());
         endereco.setCidade(usuario.getEndereco().getCidade());
         endereco.setUf(usuario.getEndereco().getUf());
-        usuarioRepositorio.merge(endereco);
+        enderecoRepositorio.merge(endereco);
     }
 
     private void salvaTelefones(UsuarioCanonico usuario, Usuario usuarioSalvo) {
@@ -313,8 +285,12 @@ public class UsuarioService {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_DATA_NASCIMENTO_OBRIGATORIO.getValor());
         }
 
-        if (Strings.isNullOrEmpty(usuarioCanonico.getSexo())) {
+        SexoEnum sexo = usuarioCanonico.getSexo();
+        if (sexo == null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_SEXO_OBRIGATORIO.getValor());
+        }
+        if (!sexo.equals(SexoEnum.F) && !sexo.equals(SexoEnum.M)) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_SEXO_INVALIDO.getValor());
         }
 
         if (Strings.isNullOrEmpty(usuarioCanonico.getEmail())) {
@@ -325,150 +301,12 @@ public class UsuarioService {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_EMAIL_CARACTERES_INVALIDOS.getValor());
         }
 
-        validaDadosDocumento(documentoCanonico);
-        validaDadosEndereco(enderecoCanonico);
-        validaDadosAcesso(acessoCanonico);
+        documentoService.validaDadosDocumento(documentoCanonico);
+        enderecoService.validaDadosEndereco(enderecoCanonico);
+        acessoService.validaDadosAcesso(acessoCanonico);
 
         for (TelefoneCanonico telefones : telefoneCanonico) {
-            validaDadosTelefone(telefones);
-        }
-    }
-
-    private void validaDadosAcesso(AcessoCanonico acessoCanonico) {
-        if (acessoCanonico == null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_ACESSO_OBRIGATORIO.getValor());
-        }
-        if (acessoCanonico.getPerfilID() == null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COD_PERFIL_OBRIGATORIO.getValor());
-        } else {
-            PerfilCanonico perfil = perfilRepositorio.buscaPerfil(acessoCanonico.getPerfilID());
-            if (perfil == null) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COD_PERFIL_NAO_EXISTE.getValor());
-            }
-        }
-        if (Strings.isNullOrEmpty(acessoCanonico.getLogin())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_OBRIGATORIO.getValor());
-        } else {
-            if (acessoCanonico.getLogin().length() < MIN_TAMANHO_LOGIN) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_TAMANHO_MIN_INSUFICIENTE.getValor());
-            }
-            if (acessoCanonico.getLogin().length() > MAX_TAMANHO_LOGIN) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_TAMANHO_MAX_INSUFICIENTE.getValor());
-            }
-        }
-        if (Strings.isNullOrEmpty(acessoCanonico.getSenha())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_SENHA_OBRIGATORIA.getValor());
-        } else {
-            if (acessoCanonico.getSenha().length() < MIN_TAMANHO_SENHA) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_SENHA_TAMANHO_MIN_INSUFICIENTE.getValor());
-            }
-            if (acessoCanonico.getSenha().length() > MAX_TAMANHO_SENHA) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_SENHA_TAMANHO_MAX_INSUFICIENTE.getValor());
-            }
-            if (!SENHA_REGEX.matcher(acessoCanonico.getSenha()).matches()) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_SENHA_CARACTERES_INVALIDOS.getValor());
-            }
-        }
-    }
-
-    private void validaDadosTelefone(TelefoneCanonico telefones) {
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
-        PhoneNumber phoneNumber = null;
-
-        if (telefones == null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TELEFONE_OBRIGATORIO.getValor());
-        }
-        if (Strings.isNullOrEmpty(telefones.getCodigo())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_CODIGO_TELEFONE_OBRIGATORIO.getValor());
-        } else {
-            if (!Strings.isNullOrEmpty(telefones.getCodigo()) && telefones.getCodigo().length() > MAX_TAMANHO_CODIGO_TELEFONE) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_CODIGO_TELEFONE_TAMANHO_EXCEDIDO.getValor());
-            }
-        }
-        if (telefones.getTipoTelefone() == null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_TELEFONE_OBRIGATORIO.getValor());
-        } else {
-            try {
-                TipoTelefoneEnum tipoTelefoneEnum = TipoTelefoneEnum.findByCodigo(telefones.getTipoTelefone().getValor());
-                if (tipoTelefoneEnum == null) {
-                    throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_TELEFONE_INVALIDO.getValor());
-                }
-            } catch (NullPointerException e) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_TELEFONE_INVALIDO.getValor());
-            }
-            if (Strings.isNullOrEmpty(telefones.getNumeroTelefone())) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_TELEFONE_OBRIGATORIO.getValor());
-            }
-
-            if (telefones.getTipoTelefone().equals(TipoTelefoneEnum.RESIDENCIAL) || telefones.getTipoTelefone().equals(TipoTelefoneEnum.COMERCIAL)) {
-                try {
-                    phoneNumber = phoneUtil.parse(telefones.getNumeroTelefone(), "BR");
-                    if (!phoneUtil.isValidNumber(phoneNumber)) {
-                        throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_TELEFONE_FIXO_INVALIDO.getValor());
-                    }
-                } catch (NumberParseException e) {
-                    throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_TELEFONE_FIXO_INVALIDO.getValor());
-                }
-            }
-            if (telefones.getTipoTelefone().equals(TipoTelefoneEnum.CELULAR)) {
-                try {
-                    phoneNumber = phoneUtil.parse(telefones.getNumeroTelefone(), "BR");
-                    if (!phoneUtil.isValidNumber(phoneNumber)) {
-                        throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_TELEFONE_CELULAR_INVALIDO.getValor());
-                    }
-                } catch (NumberParseException e) {
-                    throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_TELEFONE_CELULAR_INVALIDO.getValor());
-                }
-            }
-        }
-    }
-
-    private void validaDadosEndereco(EnderecoCanonico enderecoCanonico) {
-        if (enderecoCanonico == null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_ENDERECO_OBRIGATORIO.getValor());
-        }
-        TipoEnderecoEnum tipo = enderecoCanonico.getTipoEndereco();
-        if (tipo == null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_ENDERECO_OBRIGATORIO.getValor());
-        } else {
-            if(!tipo.equals(TipoEnderecoEnum.RESIDENCIAL) && !tipo.equals(TipoEnderecoEnum.COMERCIAL)){
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_ENDERECO_INVALIDO.getValor());
-            }
-        }
-        if (Strings.isNullOrEmpty(enderecoCanonico.getCep())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_CEP_OBRIGATORIO.getValor());
-        }
-        if (Strings.isNullOrEmpty(enderecoCanonico.getRua())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_RUA_OBRIGATORIO.getValor());
-        }
-        if (Strings.isNullOrEmpty(enderecoCanonico.getNumero())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_OBRIGATORIO.getValor());
-        }
-        if (Strings.isNullOrEmpty(enderecoCanonico.getComplemento())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COMPLEMENTO_OBRIGATORIO.getValor());
-        }
-        if (Strings.isNullOrEmpty(enderecoCanonico.getCidade())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_CIDADE_OBRIGATORIO.getValor());
-        }
-        if (Strings.isNullOrEmpty(enderecoCanonico.getUf())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_UF_OBRIGATORIO.getValor());
-        }
-    }
-
-    private void validaDadosDocumento(DocumentoCanonico documentoCanonico) {
-        if (documentoCanonico == null) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_DOCUMENTO_OBRIGATORIO.getValor());
-        } else {
-            TipoDocumentoEnum tipo = documentoCanonico.getTipoDocumento();
-            if (tipo == null) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_DOCUMENTO_OBRIGATORIO.getValor());
-            }
-            if (!tipo.equals(TipoDocumentoEnum.CPF) && !tipo.equals(TipoDocumentoEnum.CNPJ)){
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_TIPO_DOCUMENTO_INVALIDO.getValor());
-            }
-            if (Strings.isNullOrEmpty(documentoCanonico.getNumeroDocumento())) {
-                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_DOCUMENTO_OBRIGATORIO.getValor());
-            }
+            telefoneService.validaDadosTelefone(telefones);
         }
     }
 

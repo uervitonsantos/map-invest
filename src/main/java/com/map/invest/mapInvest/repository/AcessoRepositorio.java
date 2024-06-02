@@ -1,11 +1,8 @@
 package com.map.invest.mapInvest.repository;
 
 import com.map.invest.mapInvest.canonico.AcessoCanonico;
-import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.canonicoFactory.AcessoCanonicoFactory;
 import com.map.invest.mapInvest.entity.Acesso;
-import com.map.invest.mapInvest.entity.Documento;
-import com.map.invest.mapInvest.entity.Usuario;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;

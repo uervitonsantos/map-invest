@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         logger.debug("Entering in loadUserByUsername Method...");
         Acesso user = acessoRepositorio.buscarAcessoPorLogin(username);
-        if(user == null){
+        if (user == null) {
             logger.error("Username not found: " + username);
             throw new UsernameNotFoundException("could not found user..!!");
         }

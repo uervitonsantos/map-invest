@@ -4,6 +4,7 @@ import com.map.invest.mapInvest.entity.Acesso;
 import com.map.invest.mapInvest.entity.Usuario;
 import com.map.invest.mapInvest.repository.AcessoRepositorio;
 import com.map.invest.mapInvest.repository.UsuarioRepositorio;
+import com.map.invest.mapInvest.util.constantes.SexoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +34,7 @@ public class AdminUserInitializer implements CommandLineRunner {
             usuario.setNome("Administrador");
             usuario.setSobreNome("Sistema MapInvest");
             usuario.setDataNascimento(dataAtual);
-            usuario.setSexo("O");
+            usuario.setSexo(SexoEnum.valueOf("O"));
             usuario.setEmail("administrador@mapinvest.com.br");
 
             // Salva o usuário admin no banco de dados

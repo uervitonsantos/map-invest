@@ -1,10 +1,7 @@
 package com.map.invest.mapInvest.dtoFactory;
 
 import com.map.invest.mapInvest.canonico.AcessoCanonico;
-import com.map.invest.mapInvest.canonico.PerfilCanonico;
-import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.dto.AcessoDTO;
-import com.map.invest.mapInvest.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +16,7 @@ public class AcessoDTOFactory {
     @Autowired
     private PerfilDTOFactory perfilDTOFactory;
 
-    public AcessoDTO acessoDto(AcessoCanonico acesso){
+    public AcessoDTO acessoDto(AcessoCanonico acesso) {
         return Optional.ofNullable(acesso).map(canonico -> {
             return AcessoDTO.builder()
                     .acessoID(canonico.getAcessoID())

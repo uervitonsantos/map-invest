@@ -5,13 +5,13 @@ public enum TipoPerfilEnum {
     ADMINISTRADOR("Administrador"),
     MASTER("Master"),
     MADIO("Medio"),
-    BASICO("Basico")
-    ;
+    BASICO("Basico");
     private final String valor;
 
     private TipoPerfilEnum(String valor) {
         this.valor = valor;
     }
+
     public String getValor() {
         return valor;
     }

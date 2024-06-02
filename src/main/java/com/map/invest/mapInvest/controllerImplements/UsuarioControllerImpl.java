@@ -1,4 +1,4 @@
-package com.map.invest.mapInvest.resourceImplements;
+package com.map.invest.mapInvest.controllerImplements;
 
 import com.map.invest.mapInvest.bean.UsuarioBean;
 import com.map.invest.mapInvest.canonico.UsuarioCanonico;
@@ -6,7 +6,7 @@ import com.map.invest.mapInvest.dto.UsuarioDTO;
 import com.map.invest.mapInvest.dtoFactory.UsuarioDTOFactory;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.filtroDTO.UsuarioFiltroDTO;
-import com.map.invest.mapInvest.resource.UsuarioResource;
+import com.map.invest.mapInvest.resource.UsuarioController;
 import jakarta.ws.rs.BeanParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/mapinvest/usuario")
-public class UsuarioResourceImpl implements UsuarioResource {
+public class UsuarioControllerImpl implements UsuarioController {
     private static final String PATH_ID = "/{usuarioID}";
     @Autowired
     private UsuarioBean usuarioBean;

@@ -9,10 +9,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import org.springframework.http.ResponseEntity;
 
-public interface UsuarioResource extends Resource {
+public interface UsuarioController extends Resource {
 
     @Operation(summary = "Retorna o usuario consultada pelo codigo identificador (id).", tags = USUARIO, responses = {
             @ApiResponse(responseCode = RESPONSE_OK, description = "Sucesso.", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = UsuarioDTO.class))),
@@ -34,7 +33,7 @@ public interface UsuarioResource extends Resource {
     ResponseEntity atualizaUsuario(Long usuarioID, UsuarioDTO dto);
 
     @Operation(summary = "Remove usuario", tags = USUARIO, responses = {
-            @ApiResponse(responseCode = RESPONSE_NO_CONTENT, description = "Sucesso."),
+            @ApiResponse(responseCode = RESPONSE_OK, description = "Sucesso."),
             @ApiResponse(responseCode = RESPONSE_BAD_REQUEST, description = "Erro ao remover usuario.")})
     ResponseEntity removeUsuario(Long usuarioID);
 }

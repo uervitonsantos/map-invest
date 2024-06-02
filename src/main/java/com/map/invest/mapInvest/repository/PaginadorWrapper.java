@@ -1,7 +1,5 @@
 package com.map.invest.mapInvest.repository;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

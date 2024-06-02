@@ -4,13 +4,16 @@ package com.map.invest.mapInvest.api.resource;
 import com.map.invest.mapInvest.canonico.ArquivoCanonico;
 import com.map.invest.mapInvest.filtro.FiltroWrapper;
 import com.map.invest.mapInvest.filtro.Paginacao;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.core.*;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
 
-import java.util.*;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
 
 import static jakarta.ws.rs.core.HttpHeaders.CONTENT_DISPOSITION;
 
@@ -100,4 +103,5 @@ public interface Resource {
         }
         return parameters;
     }
+
 }

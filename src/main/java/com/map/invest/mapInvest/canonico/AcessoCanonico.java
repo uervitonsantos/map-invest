@@ -1,10 +1,6 @@
 package com.map.invest.mapInvest.canonico;
 
-import com.map.invest.mapInvest.entity.Perfil;
-import jakarta.persistence.Column;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter

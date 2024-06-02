@@ -1,9 +1,7 @@
 package com.map.invest.mapInvest.dtoFactory;
 
 import com.map.invest.mapInvest.canonico.TelefoneCanonico;
-import com.map.invest.mapInvest.canonico.UsuarioCanonico;
 import com.map.invest.mapInvest.dto.TelefoneDTO;
-import com.map.invest.mapInvest.dto.UsuarioDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -37,7 +35,7 @@ public class TelefoneDTOFactory {
                     .codigo(entidade.getCodigo())
                     .tipoTelefone(entidade.getTipoTelefone())
                     .numeroTelefone(entidade.getNumeroTelefone())
-                   .build();
+                    .build();
         }).orElse(null);
     }
 

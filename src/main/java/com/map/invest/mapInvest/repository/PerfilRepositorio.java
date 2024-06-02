@@ -1,9 +1,7 @@
 package com.map.invest.mapInvest.repository;
 
-import com.map.invest.mapInvest.canonico.DocumentoCanonico;
 import com.map.invest.mapInvest.canonico.PerfilCanonico;
 import com.map.invest.mapInvest.canonicoFactory.PerfilCanonicoFactory;
-import com.map.invest.mapInvest.entity.Documento;
 import com.map.invest.mapInvest.entity.Perfil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

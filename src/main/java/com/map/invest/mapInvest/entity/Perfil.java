@@ -21,9 +21,6 @@ public class Perfil implements MapInvestEntity {
     @Column(name = "PERFIL_ID")
     private Long perfilID;
 
-    @Column(name = "ACESSO_ID")
-    private Long acessoID;
-
     @Column(name = "SIG_PERFIL")
     private String codPerfil;
 

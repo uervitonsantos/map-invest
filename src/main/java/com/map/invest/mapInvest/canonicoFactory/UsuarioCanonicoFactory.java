@@ -15,15 +15,14 @@ public class UsuarioCanonicoFactory {
 
     @Autowired
     private TelefoneCanonicoFactory telefoneCanonicoFactory;
-
     @Autowired
     private AcessoCanonicoFactory acessoCanonicoFactory;
-
     @Autowired
     private DocumentoCanonicoFactory documentoCanonicoFactory;
-
     @Autowired
     private EnderecoCanonicoFactory enderecoCanonicoFactory;
+    @Autowired
+    private AuditoriaCanonicoFactory auditoriaCanonicoFactory;
 
     public UsuarioCanonico builderUsuario(Usuario usuario) {
         return Optional.ofNullable(usuario).map(entidade -> {
@@ -38,6 +37,7 @@ public class UsuarioCanonicoFactory {
                     .endereco(enderecoCanonicoFactory.builderEndereco(entidade.getEndereco()))
                     .telefones(telefoneCanonicoFactory.telefoneCanonico(entidade.getTelefones()))
                     .acesso(acessoCanonicoFactory.builderAcesso(entidade.getAcesso()))
+                    .auditoria(auditoriaCanonicoFactory.auditoriasCanonico(entidade.getAuditoria()))
                     .build();
         }).orElse(null);
     }

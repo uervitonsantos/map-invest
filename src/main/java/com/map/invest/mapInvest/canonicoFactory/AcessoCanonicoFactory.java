@@ -13,7 +13,7 @@ public class AcessoCanonicoFactory {
     @Autowired
     PerfilCanonicoFactory perfilCanonicoFactory;
 
-    public AcessoCanonico builderAcesso(Acesso acesso){
+    public AcessoCanonico builderAcesso(Acesso acesso) {
         return Optional.ofNullable(acesso).map(entidade -> {
             return AcessoCanonico.builder()
                     .acessoID(entidade.getAcessoID())
