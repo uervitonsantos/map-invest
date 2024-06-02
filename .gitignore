@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Private Keys ###
-/src/main/resources/app.key/
+!**/src/main/resources/app.key/
