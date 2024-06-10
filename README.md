@@ -1,80 +1,32 @@
-![uml](https://github.com/uervitonsantos/map-invest/assets/15036785/2fbfc388-02ad-423f-ac51-b834ee8dca4c)
+# MapInvest
 
+Bem-vindo ao MapInvest! Este é um projeto desenvolvido para ajudar os usuários a gerenciar suas finanças pessoais e a planejar seus investimentos em ações de maneira eficiente.
 
-The following is a JSON document relating the table data:
+## Visão Geral
 
-```JSON
+O MapInvest é uma API RESTful construída com Spring Boot, projetada para fornecer uma solução completa para o gerenciamento financeiro. Com o MapInvest, os usuários podem se cadastrar como pessoa física ou jurídica e utilizar diversas ferramentas para planejar e acompanhar seus investimentos em ações.
 
-{
-    "usuarioID": 3,
-    "nome": "Maria",
-    "sobreNome": "da Silva",
-    "dataNascimento": "1990-09-20",
-    "sexo": "F",
-    "email": "maria@example.com",
-    "documento": {
-        "documentoID": 2,
-        "tipoDocumento": "CPF",
-        "numeroDocumento": "123456789"
-    },
-    "endereco": {
-        "enderecoID": 2,
-        "tipoEndereco": "COMERCIAL",
-        "cep": "04578-000",
-        "rua": "Rua Comercial",
-        "numero": "100",
-        "complemento": "Sala 200",
-        "cidade": "São Paulo",
-        "uf": "SP"
-    },
-    "telefones": [
-        {
-            "telefoneID": 2,
-            "codigo": "55",
-            "tipoTelefone": "RESIDENCIAL",
-            "numeroTelefone": "1122334455"
-        },
-        {
-            "telefoneID": 3,
-            "codigo": "55",
-            "tipoTelefone": "CELULAR",
-            "numeroTelefone": "11987654321"
-        }
-    ],
-    "acesso": {
-        "acessoID": 3,
-        "perfilID": 2,
-        "login": "maria_silva",
-        "senha": "$2a$10$u7HWcrGjN9stBvNTkbBpGeFlQlVFCCiaGazHd6oUjNUegfp1kG4le",
-        "perfis": {
-            "perfilID": 2,
-            "codPerfil": "BSC",
-            "nomePerfil": "BASICO",
-            "descricao": "Perfil basico do sistema",
-            "permissaoTelas": [
-                {
-                    "permissaoTelaID": 4,
-                    "nomePermissao": "CONSULTAR",
-                    "descricao": "Permissão para consultar dados na tela"
-                },
-                {
-                    "permissaoTelaID": 5,
-                    "nomePermissao": "IMPRIMIR",
-                    "descricao": "Permissão para imprimir dados na tela"
-                },
-                {
-                    "permissaoTelaID": 6,
-                    "nomePermissao": "EXPORTAR",
-                    "descricao": "Permissão para exportar dados na tela"
-                },
-                {
-                    "permissaoTelaID": 16,
-                    "nomePermissao": "ACESSAR",
-                    "descricao": "Permissão para acessar a tela"
-                }
-            ]
-        }
-    }
-}
+## Funcionalidades
 
-```
+- Cadastro de Usuários: Opção para se cadastrar como pessoa física ou jurídica, com campos específicos para cada tipo.
+- Planejamento Financeiro: Ferramentas para traçar planos de investimento em ações.
+- Acompanhamento de Cotações: Visualize as cotações em tempo real das ações listadas na bolsa de valores.
+- Calendário de Dividendos: Acompanhe os próximos pagamentos de dividendos das suas ações.
+- Informações das Empresas: Acesso a detalhes completos sobre as empresas, incluindo histórico de desempenho e análises.
+- Simulação de Investimentos: Crie uma carteira de investimentos simulada para testar estratégias.
+- Recomendações Personalizadas: Baseado no perfil do usuário, receba sugestões de ações específicas para análise e inclusão na sua carteira simulada.
+
+## Tecnologias Utilizadas
+
+- `Java`
+- `Spring Boot` 3.x
+- `Oracle` Banco de Dados - link para o projeto com as tabelas: (https://github.com/uervitonsantos/map-invest-plsql.git)
+- `Spring Security`
+- `Swagger` para documentação de API
+- `JUnit` para testes unitários
+
+## Requisitos
+
+- Java 17 ou superior
+- Maven 3.6+
+- Oracle Database 12c ou superior
