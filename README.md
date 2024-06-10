@@ -20,7 +20,7 @@ O MapInvest é uma API RESTful construída com Spring Boot, projetada para forne
 
 - `Java`
 - `Spring Boot` 3.x
-- `Oracle` Banco de Dados - link para o projeto com as tabelas: (https://github.com/uervitonsantos/map-invest-plsql.git)
+- `Oracle` Banco de Dados
 - `Spring Security`
 - `Swagger` para documentação de API
 - `JUnit` para testes unitários
@@ -30,3 +30,5 @@ O MapInvest é uma API RESTful construída com Spring Boot, projetada para forne
 - Java 17 ou superior
 - Maven 3.6+
 - Oracle Database 12c ou superior
+
+- Link para o projeto com as tabelas: (https://github.com/uervitonsantos/map-invest-plsql.git)
