@@ -20,6 +20,8 @@ import static jakarta.ws.rs.core.HttpHeaders.CONTENT_DISPOSITION;
 public interface Resource {
     public static final String RESPONSE_OK = "200";
     public static final String RESPONSE_BAD_REQUEST = "400";
+    public static final String RESPONSE_UNAUTHORIZED = "401";
+    public static final String RESPONSE_FORBIDDEN = "403";
     public static final String RESPONSE_NO_CONTENT = "204";
     public static final String RESPONSE_CREATED = "201";
     public static final String RESPONSE_PARCIAL = "206";
@@ -28,18 +30,28 @@ public interface Resource {
     public static final String ATTACHMENT = "attachment; filename=%s";
     public static final String P_QUANTIDADE_REGISTROS = "quantidadeRegistros";
     public static final String P_PAGINA = "pagina";
-    public static final String USUARIO = "Usuario";
-    public static final String P_ID_USUARIO = "usuarioID";
+    public static final String P_ID_PESSOA = "pessoaID";
     public static final String P_ID_PERFIL = "perfilID";
-    public static final String P_COD_PERFIL = "CodPerfil";
+    public static final String P_COD_PERFIL = "codPerfil";
     public static final String P_NOME_PERFIL = "nomePerfil";
     public static final String P_NOME = "nome";
     public static final String P_SOBRENOME = "sobreNome";
     public static final String P_CPFCNPJ = "cpfcnpj";
-    public static final String ACESSO = "Acesso";
     public static final String P_EMAIL = "email";
     public static final String P_LOGIN = "login";
-
+    public static final String P_DATA_NASCIMENTO = "dataNascimento";
+    public static final String P_SEXO = "sexo";
+    public static final String P_TIPO_DOCUMENTO= "tipoDocumento";
+    public static final String P_NUM_DOCUMENTO= "numeroDocumento";
+    public static final String P_TIPO_ENDERECO= "tipoEndereco";
+    public static final String P_CEP= "cep";
+    public static final String P_BAIRRO = "bairro";
+    public static final String P_UF = "uf";
+    public static final String P_CODIGO = "codigo";
+    public static final String P_TIPO_TELEFONE = "tipoTelefone";
+    public static final String P_NUM_TELEFONE = "numeroTelefone";
+    public static final String REF_USUARIO_POST_REQUEST = "#/components/schemas/UsuarioPOSTRequest";
+    public static final String REF_USUARIO_PUT_REQUEST = "#/components/schemas/UsuarioPUTRequest";
 
     default ResponseBuilder respostaPaginada(FiltroWrapper wrapper) {
         return respostaPaginada(wrapper.getPaginacaoOptional());

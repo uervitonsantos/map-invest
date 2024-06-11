@@ -16,13 +16,14 @@ public class EnderecoCanonicoFactory {
         return Optional.ofNullable(endereco).map(entidade -> {
             return EnderecoCanonico.builder()
                     .enderecoID(entidade.getEnderecoID())
-                    .usuarioID(entidade.getUsuarioID())
+                    .pessoaID(entidade.getPessoaID())
                     .tipoEndereco(entidade.getTipoEndereco())
                     .cep(entidade.getCep())
-                    .rua(entidade.getRua())
+                    .logradouro(entidade.getLogradouro())
                     .numero(entidade.getNumero())
                     .complemento(entidade.getComplemento())
-                    .cidade(entidade.getCidade())
+                    .bairro(entidade.getBairro())
+                    .localidade(entidade.getLocalidade())
                     .uf(entidade.getUf())
                     .build();
         }).orElse(null);

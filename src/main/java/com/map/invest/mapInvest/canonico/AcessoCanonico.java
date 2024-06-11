@@ -10,7 +10,7 @@ import lombok.*;
 public class AcessoCanonico {
 
     private Long acessoID;
-    private Long usuarioID;
+    private Long pessoaID;
     private Long perfilID;
     private String login;
     private String senha;

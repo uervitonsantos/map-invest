@@ -3,7 +3,7 @@ package com.map.invest.mapInvest.service;
 import com.google.common.base.Strings;
 import com.map.invest.mapInvest.canonico.AcessoCanonico;
 import com.map.invest.mapInvest.canonico.PerfilCanonico;
-import com.map.invest.mapInvest.canonico.UsuarioCanonico;
+import com.map.invest.mapInvest.canonico.PessoaCanonico;
 import com.map.invest.mapInvest.entity.Acesso;
 import com.map.invest.mapInvest.repository.AcessoRepositorio;
 import com.map.invest.mapInvest.repository.PerfilRepositorio;
@@ -28,8 +28,8 @@ public class AcessoService {
     @Autowired
     private PerfilRepositorio perfilRepositorio;
 
-    public void validaLoginUsuario(UsuarioCanonico usuario) {
-        Acesso acesso = acessoRepositorio.buscarAcessoPorLogin(usuario.getAcesso().getLogin());
+    public void validaLoginPessoa(PessoaCanonico pessoa) {
+        Acesso acesso = acessoRepositorio.buscarAcessoPorLogin(pessoa.getAcesso().getLogin());
         if (acesso != null) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGIN_JA_EXISTE.getValor());
         }

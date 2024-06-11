@@ -1,0 +1,42 @@
+TelefonePOSTRequest:
+  type: object
+  properties:
+    codigo:
+      type: string
+      description: Código do telefone
+      example: "55"
+    tipoTelefone:
+      type: string
+      enum: ['COMERCIAL', 'RESIDENCIAL', 'CELULAR']
+      description: Tipo de telefone CELULAR, RESIDENSIAL ou COMERCIAL
+      example: "CELULAR"
+    numeroTelefone:
+      type: string
+      description: Número de telefone
+      example: "11987654321"
+
+  required: ['codigo', 'tipoTelefone', 'numeroTelefone']
+
+TelefonePUTRequest:
+  type: object
+  properties:
+    telefoneID:
+      type: integer
+      format: int64
+      description: ID do telefone
+      example: 1
+    codigo:
+      type: string
+      description: Código do telefone
+      example: "55"
+    tipoTelefone:
+      type: string
+      enum: ['COMERCIAL', 'RESIDENCIAL', 'CELULAR']
+      description: Tipo de telefone CELULAR, RESIDENSIAL ou COMERCIAL
+      example: "CELULAR"
+    numeroTelefone:
+      type: string
+      description: Número de telefone
+      example: "11987654321"
+
+  required: ['telefoneID', 'codigo', 'tipoTelefone', 'numeroTelefone']

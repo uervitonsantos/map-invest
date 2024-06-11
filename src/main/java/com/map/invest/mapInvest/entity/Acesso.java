@@ -24,23 +24,23 @@ public class Acesso implements Serializable {
     @SequenceGenerator(name = "acesso_sequence", sequenceName = "SEQ_ACESSO", allocationSize = 1)
     private Long acessoID;
 
-    @Column(name = "USUARIO_ID")
-    private Long usuarioID;
+    @Column(name = "PESSOA_ID")
+    private Long pessoaID;
 
     @Column(name = "PERFIL_ID")
     private Long perfilID;
 
-    @Column(name = "LOGIN_USUARIO")
+    @Column(name = "LOGIN_PESSOA")
     private String login;
 
-    @Column(name = "SENHA_USUARIO")
+    @Column(name = "SENHA_PESSOA")
     private String senha;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
-    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "PESSOA_ID", referencedColumnName = "PESSOA_ID", insertable = false, updatable = false)
+    private Pessoa pessoa;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PERFIL_ID", referencedColumnName = "PERFIL_ID", insertable = false, updatable = false)
     private Perfil perfis;
 

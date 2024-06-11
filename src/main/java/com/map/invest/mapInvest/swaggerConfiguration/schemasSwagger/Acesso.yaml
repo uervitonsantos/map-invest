@@ -1,0 +1,41 @@
+AcessoPOSTRequest:
+  type: object
+  properties:
+    perfilID:
+      type: integer
+      format: int64
+      description: ID do perfil
+      example: 1
+    login:
+      type: string
+      description: Nome de usuário
+      example: "ariano.suassuna"
+    senha:
+      type: string
+      description: Senha do usuário
+      example: "SenhaForte@123"
+  required: ['perfilID', login, senha]
+
+AcessoPUTRequest:
+  type: object
+  properties:
+    acessoID:
+      type: integer
+      format: int64
+      description: ID do acesso
+      example: 1
+    perfilID:
+      type: integer
+      format: int64
+      description: ID do perfil
+      example: 1
+    login:
+      type: string
+      description: Nome de usuário
+      example: "ariano.suassuna"
+    senha:
+      type: string
+      description: Senha do usuário
+      example: "SenhaForte@123"
+
+  required: ['acessoID', 'perfilID', 'login', 'senha']

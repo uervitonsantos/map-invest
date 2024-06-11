@@ -4,7 +4,7 @@ public enum TipoPerfilEnum {
 
     ADMINISTRADOR("Administrador"),
     MASTER("Master"),
-    MADIO("Medio"),
+    MEDIO("Medio"),
     BASICO("Basico");
     private final String valor;
 

@@ -24,8 +24,8 @@ public class Telefone implements Serializable {
     @SequenceGenerator(name = "telefone_sequence", sequenceName = "SEQ_TELEFONE", allocationSize = 1)
     private Long telefoneID;
 
-    @Column(name = "USUARIO_ID")
-    private Long usuarioID;
+    @Column(name = "PESSOA_ID")
+    private Long pessoaID;
 
     @Column(name = "CODIGO")
     private String codigo;
@@ -38,6 +38,6 @@ public class Telefone implements Serializable {
 
     @ManyToMany(mappedBy = "telefones", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE,
             CascadeType.MERGE})
-    private List<Usuario> usuarios;
+    private List<Pessoa> pessoas;
 
 }

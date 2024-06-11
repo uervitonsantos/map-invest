@@ -1,0 +1,32 @@
+DocumentoPOSTRequest:
+  type: object
+  properties:
+    tipoDocumento:
+      type: string
+      enum: ['CPF', 'CNPJ']
+      description: Tipo do documento
+      example: "CPF"
+    numeroDocumento:
+      type: string
+      description: Número do documento
+      example: "232.630.167-68"
+  required: ['tipoDocumento', 'numeroDocumento']
+
+DocumentoPUTRequest:
+  type: object
+  properties:
+    documentoID:
+      type: integer
+      format: int64
+      description: ID do documento
+      example: 1
+    tipoDocumento:
+      type: string
+      enum: ['CPF', 'CNPJ']
+      description: Tipo do documento
+      example: "CPF"
+    numeroDocumento:
+      type: string
+      description: Número do documento
+      example: "232.630.167-68"
+  required: ['documentoID', 'tipoDocumento', 'numeroDocumento']

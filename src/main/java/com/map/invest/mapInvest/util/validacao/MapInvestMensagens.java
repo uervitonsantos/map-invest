@@ -20,7 +20,7 @@ public enum MapInvestMensagens {
     ERRO_VALIDACAO_NUMERO_DOCUMENTO_OBRIGATORIO("Obrigatório informar o número de documento"),
     ERRO_VALIDACAO_ENDERECO_OBRIGATORIO("Obrigatório informar o endereço"),
     ERRO_VALIDACAO_TIPO_ENDERECO_OBRIGATORIO("Obrigatório informar o tipo de endereço"),
-    ERRO_VALIDACAO_CEP_OBRIGATORIO("Obrigatório informar o CEP para endereço"),
+    ERRO_VALIDACAO_CEP_OBRIGATORIO("Obrigatório informar um CEP valido para o endereço"),
     ERRO_VALIDACAO_RUA_OBRIGATORIO("Obrigatório informar a rua para endereço"),
     ERRO_VALIDACAO_NUMERO_OBRIGATORIO("Obrigatório informar o número para endereço"),
     ERRO_VALIDACAO_COMPLEMENTO_OBRIGATORIO("Obrigatório informar a complemento para endereço"),
@@ -50,7 +50,20 @@ public enum MapInvestMensagens {
     ERRO_VALIDACAO_DATA_NASCIMENTO_OBRIGATORIO("Obrigatório informar a data de nascimento do usuario"),
     ERRO_VALIDACAO_SEXO_OBRIGATORIO("Obrigatório informar o sexo do usuario"),
     ERRO_VALIDACAO_NUMERO_DOCUMENTO_CPF_INVALIDO("CPF invalido, verifique o número do documento"),
-    ERRO_VALIDACAO_NUMERO_DOCUMENTO_CNPJ_INVALIDO("CNPJ invalido, verifique o número do documento");
+    ERRO_VALIDACAO_NUMERO_DOCUMENTO_CNPJ_INVALIDO("CNPJ invalido, verifique o número do documento"),
+    ERRO_VALIDACAO_BAIRRO_OBRIGATORIO("Obrigatório informar o bairro no endereço"),
+    ERRO_FORMATO_CEP_INVALIDO("Informar somento os números do CEP sem o '-'"),
+    ERRO_VALIDACAO_DADOS_PESSOA_FISICA_OBRIGATORIO("Obrigatório informar os dados dos documetos da pessoa fisica"),
+    ERRO_VALIDACAO_NACIONALIDADE_OBRIGATORIO("Obrigatório informar a nacionalidade da pessoa fisica"),
+    ERRO_VALIDACAO_NATURALIDADE_OBRIGATORIO("Obrigatório informar a naturalidade da pessoa fisica"),
+    ERRO_VALIDACAO_DADOS_PESSOA_JURIDICA_OBRIGATORIO("Obrigatório informar os dados dos documetos da pessoa juridica"),
+    ERRO_VALIDACAO_NOME_COMERCIAL_OBRIGATORIO("Obrigatório informar o nome comercial da pessoa juridica"),
+    ERRO_VALIDACAO_DATA_CONSTITUICAO_OBRIGATORIO("Obrigatório informar a data de constituição da pessoa juridica"),
+    ERRO_VALIDACAO_TIPO_INSCRICAO_OBRIGATORIO("Obrigatório informar o tipo de inscrição da pessoa juridica"),
+    ERRO_VALIDACAO_NUMERO_INSCRICAO_OBRIGATORIO("Obrigatório informar o número de inscrição da pessoa juridica"),
+    ERRO_VALIDACAO_NATUREZA_JURIDICA_OBRIGATORIO("Obrigatório informar a natureza da pessoa juridica"),
+    ERRO_VALIDACAO_RAMO_ATIVIDADE_OBRIGATORIO("Obrigatório informar o ramo de atividade da pessoa juridica"),
+    ERRO_VALIDACAO_OBJETIVO_SOCIAL_OBRIGATORIO("Obrigatório informar o objetivo social da pessoa juridica");
 
 
     private final String valor;

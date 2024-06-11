@@ -11,12 +11,13 @@ import lombok.*;
 public class EnderecoCanonico {
 
     private Long enderecoID;
-    private Long usuarioID;
+    private Long pessoaID;
     private TipoEnderecoEnum tipoEndereco;
     private String cep;
-    private String rua;
+    private String logradouro;
     private String numero;
     private String complemento;
-    private String cidade;
+    private String bairro;
+    private String localidade;
     private String uf;
 }

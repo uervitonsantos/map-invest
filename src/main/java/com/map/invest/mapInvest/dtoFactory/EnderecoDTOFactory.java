@@ -18,10 +18,11 @@ public class EnderecoDTOFactory {
                     .enderecoID(canonico.getEnderecoID())
                     .tipoEndereco(canonico.getTipoEndereco())
                     .cep(canonico.getCep())
-                    .rua(canonico.getRua())
+                    .logradouro(canonico.getLogradouro())
                     .numero(canonico.getNumero())
                     .complemento(canonico.getComplemento())
-                    .cidade(canonico.getCidade())
+                    .bairro(canonico.getBairro())
+                    .localidade(canonico.getLocalidade())
                     .uf(canonico.getUf())
                     .build();
         }).orElse(null);
@@ -39,11 +40,8 @@ public class EnderecoDTOFactory {
                     .enderecoID(entidade.getEnderecoID())
                     .tipoEndereco(entidade.getTipoEndereco())
                     .cep(entidade.getCep())
-                    .rua(entidade.getRua())
                     .numero(entidade.getNumero())
                     .complemento(entidade.getComplemento())
-                    .cidade(entidade.getCidade())
-                    .uf(entidade.getUf())
                     .build();
         }).orElse(null);
     }

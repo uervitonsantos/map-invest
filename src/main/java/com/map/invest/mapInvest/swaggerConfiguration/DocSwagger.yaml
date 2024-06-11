@@ -1,0 +1,24 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+components:
+  schemas:
+    UsuarioPOSTRequest:
+      $ref: './schemasSwagger/Usuario.yaml#/UsuarioPOSTRequest'
+    DocumentoPOSTRequest:
+      $ref: './schemasSwagger/DocumentoPrincipal.yaml#/DocumentoPOSTRequest'
+    TelefonePOSTRequest:
+      $ref: './schemasSwagger/Telefone.yaml#/TelefonePOSTRequest'
+    AcessoPOSTRequest:
+      $ref: './schemasSwagger/Acesso.yaml#/AcessoPOSTRequest'
+    UsuarioPUTRequest:
+      $ref: './schemasSwagger/Usuario.yaml#/UsuarioPUTRequest'
+    DocumentoPUTRequest:
+      $ref: './schemasSwagger/DocumentoPrincipal.yaml#/DocumentoPUTRequest'
+    TelefonePUTRequest:
+      $ref: './schemasSwagger/Telefone.yaml#/TelefonePUTRequest'
+    AcessoPUTRequest:
+      $ref: './schemasSwagger/Acesso.yaml#/AcessoPUTRequest'

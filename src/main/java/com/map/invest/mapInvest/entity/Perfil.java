@@ -36,6 +36,6 @@ public class Perfil implements MapInvestEntity {
             inverseJoinColumns = @JoinColumn(name = "PERMISSAO_TELA_ID", referencedColumnName = "PERMISSAOTELA_ID", insertable = false, updatable = false))
     private List<PermissaoTela> permissaoTelas;
 
-    @ManyToMany(mappedBy = "perfis", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "perfis", fetch = FetchType.LAZY)
     private List<Acesso> acessos;
 }

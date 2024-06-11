@@ -1,8 +1,6 @@
 package com.map.invest.mapInvest.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -42,7 +40,7 @@ public class Auditoria implements Serializable {
     @Column(name = "REGISTRO_ID")
     private Long registroID;
 
-    @Column(name = "USUARIO")
+    @Column(name = "PESSOA")
     private String usuarioModificador;
 
     @Type(JsonType.class)
@@ -54,7 +52,7 @@ public class Auditoria implements Serializable {
     private JsonNode dadosNovos;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REGISTRO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "REGISTRO_ID", referencedColumnName = "PESSOA_ID", insertable = false, updatable = false)
+    private Pessoa pessoa;
 
 }

@@ -15,7 +15,7 @@ public class TelefoneCanonicoFactory {
         return Optional.ofNullable(telefone).map(entidade -> {
             return TelefoneCanonico.builder()
                     .telefoneID(entidade.getTelefoneID())
-                    .usuarioID(entidade.getUsuarioID())
+                    .pessoaID(entidade.getPessoaID())
                     .codigo(entidade.getCodigo())
                     .tipoTelefone(entidade.getTipoTelefone())
                     .numeroTelefone(entidade.getNumeroTelefone())

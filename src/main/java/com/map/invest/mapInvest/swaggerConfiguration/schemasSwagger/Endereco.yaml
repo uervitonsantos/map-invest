@@ -1,0 +1,51 @@
+EnderecoPOSTRequest:
+  type: object
+  properties:
+    tipoEndereco:
+      type: string
+      enum: ['COMERCIAL', 'RESIDENCIAL']
+      description: Tipo de endereço endereço
+      example: "RESIDENCIAL"
+    cep:
+      type: string
+      description: Código postal
+      example: "01310-100"
+    numero:
+      type: string
+      description: Número do endereço
+      example: "1000"
+    complemento:
+      type: string
+      description: Complementopara do endereço
+      example: "de 612 a 1510 - lado par"
+
+  required: ['enderecoID', 'tipoEndereco', 'cep']
+
+
+EnderecoPUTRequest:
+  type: object
+  properties:
+    enderecoID:
+      type: integer
+      format: int64
+      description: ID do endereço
+      example: 1
+    tipoEndereco:
+      type: string
+      enum: ['COMERCIAL', 'RESIDENCIAL']
+      description: Tipo de endereço endereço
+      example: "RESIDENCIAL"
+    cep:
+      type: string
+      description: Código postal
+      example: "01310-100"
+    numero:
+      type: string
+      description: Número do endereço
+      example: "1000"
+    complemento:
+      type: string
+      description: Complementopara do endereço
+      example: "de 612 a 1510 - lado par"
+
+  required: ['enderecoID', 'tipoEndereco', 'cep', 'numero', 'complemento']

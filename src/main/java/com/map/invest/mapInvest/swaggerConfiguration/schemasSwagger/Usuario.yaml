@@ -1,0 +1,103 @@
+UsuarioPOSTRequest:
+  type: object
+  properties:
+    nome:
+      type: string
+      description: Nome do usuário
+      example: Ariano
+    sobreNome:
+      type: string
+      description: Sobrenome do usuário
+      example: Vilar Suassuna
+    dataNascimento:
+      type: string
+      format: date
+      description: Data de nascimento do usuário
+      example: 1927-06-16
+    sexo:
+      type: string
+      enum: ['M', 'F']
+      description: Sexo do usuário
+      example: M
+    email:
+      type: string
+      format: email
+      description: Email do usuário
+      example: ariano.suassuna@example.com
+    documento:
+      $ref: './DocumentoPrincipal.yaml#/DocumentoPOSTRequest'
+    endereco:
+      $ref: './Endereco.yaml#/EnderecoPOSTRequest'
+    telefones:
+      type: array
+      items:
+        $ref: './Telefone.yaml#/TelefonePOSTRequest'
+      example:
+        - telefoneID: "1"
+          codigo: "55"
+          tipoTelefone: "CELULAR"
+          numeroTelefone: "11987654321"
+        - telefoneID: "2"
+          codigo: "55"
+          tipoTelefone: "RESIDENCIAL"
+          numeroTelefone: "1132876543"
+    acesso:
+      $ref: './Acesso.yaml#/AcessoPOSTRequest'
+  required: ['nome', 'sobreNome', 'dataNascimento', 'sexo', 'email', 'documento', 'endereco', 'telefones', 'acesso']
+
+UsuarioPUTRequest:
+  type: object
+  properties:
+    usuarioID:
+      type: integer
+      format: int64
+      description: ID do usuário
+      example: 1
+    nome:
+      type: string
+      description: Nome do usuário
+      example: Ariano
+    sobreNome:
+      type: string
+      description: Sobrenome do usuário
+      example: Vilar Suassuna
+    dataNascimento:
+      type: string
+      format: date
+      description: Data de nascimento do usuário
+      example: 1927-06-16
+    sexo:
+      type: string
+      enum: ['M', 'F']
+      description: Sexo do usuário
+      example: M
+    email:
+      type: string
+      format: email
+      description: Email do usuário
+      example: ariano.suassuna@example.com
+
+    documento:
+      $ref: './DocumentoPrincipal.yaml#/DocumentoPUTRequest'
+
+    endereco:
+      $ref: './Endereco.yaml#/EnderecoPUTRequest'
+
+    telefones:
+      type: array
+      items:
+        $ref: './Telefone.yaml#/TelefonePUTRequest'
+      example:
+        - telefoneID: "1"
+          codigo: "55"
+          tipoTelefone: "CELULAR"
+          numeroTelefone: "11987654321"
+        - telefoneID: "2"
+          codigo: "55"
+          tipoTelefone: "RESIDENCIAL"
+          numeroTelefone: "1132876543"
+
+    acesso:
+      $ref: './Acesso.yaml#/AcessoPUTRequest'
+
+  required: ['usuarioID', 'nome', 'sobreNome', 'dataNascimento', 'sexo', 'email', 'documento', 'endereco', 'telefones', 'acesso']

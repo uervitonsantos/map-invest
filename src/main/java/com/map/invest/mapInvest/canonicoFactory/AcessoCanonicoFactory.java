@@ -17,7 +17,7 @@ public class AcessoCanonicoFactory {
         return Optional.ofNullable(acesso).map(entidade -> {
             return AcessoCanonico.builder()
                     .acessoID(entidade.getAcessoID())
-                    .usuarioID(entidade.getUsuarioID())
+                    .pessoaID(entidade.getPessoaID())
                     .perfilID(entidade.getPerfilID())
                     .login(entidade.getLogin())
                     .senha(entidade.getSenha())

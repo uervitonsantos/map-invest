@@ -23,8 +23,8 @@ public class Endereco implements Serializable {
     @SequenceGenerator(name = "endereco_sequence", sequenceName = "SEQ_ENDERECO", allocationSize = 1)
     private Long enderecoID;
 
-    @Column(name = "USUARIO_ID")
-    private Long usuarioID;
+    @Column(name = "PESSOA_ID")
+    private Long pessoaID;
 
     @Column(name = "TIPO_ENDERECO")
     private TipoEnderecoEnum tipoEndereco;
@@ -33,7 +33,7 @@ public class Endereco implements Serializable {
     private String cep;
 
     @Column(name = "RUA")
-    private String rua;
+    private String logradouro;
 
     @Column(name = "NUMERO")
     private String numero;
@@ -41,13 +41,16 @@ public class Endereco implements Serializable {
     @Column(name = "COMPLEMENTO")
     private String complemento;
 
+    @Column(name = "BAIRRO")
+    private String bairro;
+
     @Column(name = "CIDADE")
-    private String cidade;
+    private String localidade;
 
     @Column(name = "UF")
     private String uf;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
-    @JoinColumn(name = "USUARIO_ID", referencedColumnName = "USUARIO_ID", insertable = false, updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "PESSOA_ID", referencedColumnName = "PESSOA_ID", insertable = false, updatable = false)
+    private Pessoa pessoa;
 }

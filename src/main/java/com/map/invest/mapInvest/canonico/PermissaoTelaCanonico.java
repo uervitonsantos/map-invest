@@ -11,5 +11,4 @@ public class PermissaoTelaCanonico {
     private Long permissaoTelaID;
     private String nomePermissao;
     private String descricao;
-
 }

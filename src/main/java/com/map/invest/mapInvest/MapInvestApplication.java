@@ -9,4 +9,5 @@ public class MapInvestApplication {
     public static void main(String[] args) {
         SpringApplication.run(MapInvestApplication.class, args);
     }
+
 }
