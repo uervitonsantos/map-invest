@@ -19,7 +19,7 @@ import lombok.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TelefoneDTO {
 
-    @Schema(description = "Identificador único do telefone", example = "1")
+    @Schema(description = "Identificador único do telefone", example = "1000")
     @XmlElement(nillable = false)
     private Long telefoneID;
 

@@ -2,15 +2,15 @@ package com.map.invest.security;
 
 import com.map.invest.entity.*;
 import com.map.invest.repository.*;
-import com.map.invest.util.constantes.TipoDocumentoEnum;
-import com.map.invest.util.constantes.TipoEnderecoEnum;
-import com.map.invest.util.constantes.TipoTelefoneEnum;
+import com.map.invest.util.constantes.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +26,9 @@ public class AdminUserInitializer implements CommandLineRunner {
     private DocumentoPrincipalRepositorio documentoPrincipalRepositorio;
 
     @Autowired
+    private PessoaJuridicaRepositorio pessoaJuridicaRepositorio;
+
+    @Autowired
     private EnderecoRepositorio enderecoRepositorio;
 
     @Autowired
@@ -38,6 +41,7 @@ public class AdminUserInitializer implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
         // Verifica se já existe um usuário admin
@@ -45,21 +49,36 @@ public class AdminUserInitializer implements CommandLineRunner {
         if (buscaAcessoUsuarioAdmin == null) {
 
             LocalDate dataAtual = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
             Pessoa usuario = new Pessoa();
             usuario.setNome("Administrador");
             usuario.setEmail("administrador@mapinvest.com.br");
-            usuario.setAtivo("1");
-            usuario = pessoaRepositorio.salvaPessoa(usuario);
+            usuario.setAtivo(AtivoEnum.SIM);
+            Pessoa usuarioSalvo = pessoaRepositorio.salvaPessoa(usuario);
 
             DocumentoPrincipal documentoPrincipal = new DocumentoPrincipal();
-            documentoPrincipal.setPessoaID(usuario.getPessoaID());
-            documentoPrincipal.setTipoDocumentoPrincipal(TipoDocumentoEnum.valueOf("CNPJ"));
+            documentoPrincipal.setPessoaID(usuarioSalvo.getPessoaID());
+            documentoPrincipal.setTipoDocumentoPrincipal(TipoDocumentoEnum.CNPJ);
             documentoPrincipal.setNumeroDocumentoPrincipal("73263618000118");
-            documentoPrincipalRepositorio.merge(documentoPrincipal);
+            documentoPrincipal = documentoPrincipalRepositorio.merge(documentoPrincipal);
+
+            PessoaJuridica pessoaJuridica = new PessoaJuridica();
+            pessoaJuridica.setDocumentoPrincipalID(documentoPrincipal.getDocumentoPrincipalID());
+            pessoaJuridica.setNomeComercia("Map Invest Serviços Financeiros");
+            String dataConstituicaoString = "22-06-2024";
+            LocalDate dataConstituicao = LocalDate.parse(dataConstituicaoString, formatter);
+            pessoaJuridica.setDataConstituicao(dataConstituicao);
+            pessoaJuridica.setTipoInscricao(TipoInscricaoEnum.SOCIEDADE_LTDA);
+            pessoaJuridica.setNumeroInscricao("574436574523");
+            pessoaJuridica.setNaturazaJuridica("Serviços");
+            pessoaJuridica.setRamoAtividade("Financeiro");
+            pessoaJuridica.setObjetivoSocial("Fornecimento de Serviços Financeiros");
+            pessoaJuridicaRepositorio.merge(pessoaJuridica);
 
             Endereco endereco = new Endereco();
-            endereco.setPessoaID(usuario.getPessoaID());
-            endereco.setTipoEndereco(TipoEnderecoEnum.valueOf("COMERCIAL"));
+            endereco.setPessoaID(usuarioSalvo.getPessoaID());
+            endereco.setTipoEndereco(TipoEnderecoEnum.COMERCIAL);
             endereco.setCep("05426200");
             endereco.setLogradouro("Avenida Brigadeiro Faria Lima");
             endereco.setNumero("1000");
@@ -69,19 +88,21 @@ public class AdminUserInitializer implements CommandLineRunner {
             endereco.setUf("UF");
             enderecoRepositorio.merge(endereco);
 
+            // Criação e associação dos telefones
             Telefone telefone1 = new Telefone();
-            telefone1.setPessoaID(usuario.getPessoaID());
             telefone1.setCodigo("55");
-            telefone1.setTipoTelefone(TipoTelefoneEnum.valueOf("COMERCIAL"));
+            telefone1.setTipoTelefone(TipoTelefoneEnum.COMERCIAL);
             telefone1.setNumeroTelefone("1136034766");
 
-            List<Telefone> telefones = new ArrayList<>();
-            telefones.add(telefone1);
-            usuario.setTelefones(telefones);
-            pessoaRepositorio.merge(usuario);
+            if (usuarioSalvo.getTelefones() == null) {
+                usuarioSalvo.setTelefones(new ArrayList<>());
+            }
+            usuarioSalvo.getTelefones().add(telefone1);
+            pessoaRepositorio.merge(usuarioSalvo);
+
 
             Acesso acesso = new Acesso();
-            acesso.setPessoaID(usuario.getPessoaID());
+            acesso.setPessoaID(usuarioSalvo.getPessoaID());
             acesso.setPerfilID(1L);
             acesso.setLogin("administrador");
             acesso.setSenha(passwordEncoder.encode("Adm1n1str4dor#"));

@@ -1,5 +1,7 @@
 package com.map.invest.canonico;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.map.invest.util.constantes.TipoInscricaoEnum;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,7 +17,7 @@ public class PessoaJuridicaCanonico {
     private Long documentoPrincipalID;
     private String nomeComercia;
     private LocalDate dataConstituicao;
-    private String tipoInscricao;
+    private TipoInscricaoEnum tipoInscricao;
     private String numeroInscricao;
     private String naturazaJuridica;
     private String ramoAtividade;

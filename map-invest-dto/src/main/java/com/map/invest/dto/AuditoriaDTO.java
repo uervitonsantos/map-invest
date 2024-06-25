@@ -37,7 +37,7 @@ public class AuditoriaDTO {
     @XmlElement(nillable = false)
     private String nomeTabela;
 
-    @Schema(description = "Identificador único do registro", example = "1")
+    @Schema(description = "Identificador único do registro", example = "1000")
     @XmlElement(nillable = false)
     private Long registroID;
 

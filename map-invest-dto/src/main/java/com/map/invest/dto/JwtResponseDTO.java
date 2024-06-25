@@ -22,4 +22,8 @@ public class JwtResponseDTO {
     @XmlElement(nillable = false)
     private String accessToken;
 
+    @Schema(description = "Atualiza o token para autenticação", example = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzE3NzE1NDI4LCJleHAiOjE3MTc3MTkwMjh9.83-68OfdSWiWUKFMPV1QSKh3ZJgAXbOLMJG1r38wJ6k")
+    @XmlElement(nillable = false)
+    private String refreshToken;
+
 }

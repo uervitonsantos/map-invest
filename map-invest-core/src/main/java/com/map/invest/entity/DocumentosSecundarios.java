@@ -1,5 +1,7 @@
 package com.map.invest.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.map.invest.util.constantes.TipoDocumentoSecundariosEnum;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,7 +29,7 @@ public class DocumentosSecundarios implements Serializable {
     private Long pessoaFisicaID;
 
     @Column(name = "TIPO_DOCUMENTOS_SECUNDARIOS")
-    private String tipoDocumentosSecundarios;
+    private TipoDocumentoSecundariosEnum tipoDocumentosSecundarios;
 
     @Column(name = "NUMERO_DOCUMENTOS_SECUNDARIOS")
     private String numeroDocumentosSecundarios;
@@ -38,7 +40,7 @@ public class DocumentosSecundarios implements Serializable {
     @Column(name = "DATA_EMISSAO")
     private LocalDate dataEmissao;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE }, orphanRemoval = true)
     @JoinColumn(name = "PESSOA_FISICA_ID", referencedColumnName = "PESSOA_FISICA_ID", insertable = false, updatable = false)
     private PessoaFisica pessoaFisica;
 

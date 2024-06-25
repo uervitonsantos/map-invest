@@ -15,7 +15,7 @@ import lombok.*;
 @XmlRootElement(name = "PermissaoTela")
 public class PermissaoTelaDTO {
 
-    @Schema(description = "Identificador único da permissão de tela", example = "1")
+    @Schema(description = "Identificador único da permissão de tela", example = "1000")
     @XmlElement(nillable = false)
     private Long permissaoTelaID;
 

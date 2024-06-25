@@ -18,11 +18,11 @@ import lombok.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AcessoDTO {
 
-    @Schema(description = "Identificador único do acesso", example = "1")
+    @Schema(description = "Identificador único do acesso", example = "1000")
     @XmlElement(nillable = false)
     private Long acessoID;
 
-    @Schema(description = "Identificador único para o tipo do perfil", example = "1")
+    @Schema(description = "Identificador único para o tipo do perfil", example = "1000")
     @XmlElement(nillable = false)
     private Long perfilID;
 

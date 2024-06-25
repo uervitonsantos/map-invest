@@ -1,5 +1,6 @@
 package com.map.invest.entity;
 
+import com.map.invest.util.constantes.TipoInscricaoEnum;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class PessoaJuridica implements Serializable {
     private LocalDate dataConstituicao;
 
     @Column(name = "TIPO_INSCRICAO")
-    private String tipoInscricao;
+    private TipoInscricaoEnum tipoInscricao;
 
     @Column(name = "NUMERO_INSCRICAO")
     private String numeroInscricao;
@@ -41,13 +42,13 @@ public class PessoaJuridica implements Serializable {
     @Column(name = "NATUREZA_JURIDICA")
     private String naturazaJuridica;
 
-    @Column(name = "RAMO_ATIVIDADE")
+    @Column(name = "RAMO_ATIVIDADE") // https://servicodados.ibge.gov.br/api/docs/cnae?versao=2
     private String ramoAtividade;
 
     @Column(name = "OBJETIVO_SOCIAL")
     private String objetivoSocial;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "DOCUMENTO_PRINCIPAL_ID", referencedColumnName = "DOCUMENTO_PRINCIPAL_ID", insertable = false, updatable = false)
     private DocumentoPrincipal documentoPrincipal;
 

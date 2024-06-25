@@ -1,5 +1,7 @@
 package com.map.invest.canonico;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.map.invest.util.constantes.TipoDocumentoSecundariosEnum;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,7 +15,7 @@ public class DocumentosSecundariosCanonico {
 
     private Long documentosSecundarioslID;
     private Long pessoaFisicaID;
-    private String tipoDocumentosSecundarios;
+    private TipoDocumentoSecundariosEnum tipoDocumentosSecundarios;
     private String numeroDocumentosSecundarios;
     private String orgaoEmissor;
     private LocalDate dataEmissao;

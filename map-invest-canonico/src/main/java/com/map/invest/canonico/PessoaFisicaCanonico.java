@@ -1,5 +1,6 @@
 package com.map.invest.canonico;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.map.invest.util.constantes.SexoEnum;
 import lombok.*;
 

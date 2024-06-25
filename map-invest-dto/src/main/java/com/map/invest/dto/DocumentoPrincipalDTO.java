@@ -22,7 +22,7 @@ import lombok.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class DocumentoPrincipalDTO {
 
-    @Schema(description = "Identificador único do documento", example = "1")
+    @Schema(description = "Identificador único do documento", example = "1000")
     @XmlElement(nillable = false)
     private Long documentoPrincipalID;
 

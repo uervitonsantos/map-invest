@@ -1,5 +1,6 @@
 package com.map.invest.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.map.invest.util.adapter.LocalDateAdapter;
 import com.map.invest.util.constantes.SexoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,28 +25,28 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PessoaFisicaDTO {
 
-    @Schema(description = "Identificador único da Pessoa Fisica", example = "1")
+    @Schema(description = "Identificador único da Pessoa Fisica", example = "1000")
     @XmlElement(nillable = false)
     private Long pessoaFisicaID;
 
-    @Schema(description = "Sobrenome da pessoa", example = "Y")
+    @Schema(description = "Sobrenome da pessoa", example = "Silva dos Santos")
     @XmlElement(nillable = false)
     private String sobrenome;
 
-    @Schema(description = "Data de nascimento", example = "Y")
+    @Schema(description = "Data de nascimento", example = "1988-06-15")
     @XmlElement(nillable = false)
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate dataNascimento;
 
-    @Schema(description = "Sexo (M/F/O)", example = "Y")
+    @Schema(description = "Sexo (M/F/O)", example = "M")
     @XmlElement(nillable = false)
     private SexoEnum sexo;
 
-    @Schema(description = "Nacionalidade da pessoa Fisica", example = "Y")
+    @Schema(description = "Nacionalidade da pessoa Fisica", example = "BRASIL")
     @XmlElement(nillable = false)
     private String nacionalidade;
 
-    @Schema(description = "Naturalidade da pessoa Fisica", example = "Y")
+    @Schema(description = "Naturalidade da pessoa Fisica", example = "SAO PAULO")
     @XmlElement(nillable = false)
     private String naturalidade;
 

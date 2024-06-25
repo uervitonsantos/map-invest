@@ -1,5 +1,6 @@
 package com.map.invest.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.map.invest.util.constantes.SexoEnum;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -43,8 +44,7 @@ public class PessoaFisica implements Serializable {
     @Column(name = "NATURALIDADE")
     private String naturalidade;
 
-    @OneToMany(mappedBy = "pessoaFisica", fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "pessoaFisica", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     private List<DocumentosSecundarios> documentosSecundarios;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)

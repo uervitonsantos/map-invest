@@ -21,7 +21,7 @@ public enum MapInvestMensagens {
     ERRO_VALIDACAO_ENDERECO_OBRIGATORIO("Obrigatório informar o endereço"),
     ERRO_VALIDACAO_TIPO_ENDERECO_OBRIGATORIO("Obrigatório informar o tipo de endereço"),
     ERRO_VALIDACAO_CEP_OBRIGATORIO("Obrigatório informar um CEP valido para o endereço"),
-    ERRO_VALIDACAO_RUA_OBRIGATORIO("Obrigatório informar a rua para endereço"),
+    ERRO_VALIDACAO_LOGRADOURO_OBRIGATORIO("Obrigatório informar o logradouro para endereço"),
     ERRO_VALIDACAO_NUMERO_OBRIGATORIO("Obrigatório informar o número para endereço"),
     ERRO_VALIDACAO_COMPLEMENTO_OBRIGATORIO("Obrigatório informar a complemento para endereço"),
     ERRO_VALIDACAO_CIDADE_OBRIGATORIO("Obrigatório informar a cidade para endereço"),
@@ -63,7 +63,25 @@ public enum MapInvestMensagens {
     ERRO_VALIDACAO_NUMERO_INSCRICAO_OBRIGATORIO("Obrigatório informar o número de inscrição da pessoa juridica"),
     ERRO_VALIDACAO_NATUREZA_JURIDICA_OBRIGATORIO("Obrigatório informar a natureza da pessoa juridica"),
     ERRO_VALIDACAO_RAMO_ATIVIDADE_OBRIGATORIO("Obrigatório informar o ramo de atividade da pessoa juridica"),
-    ERRO_VALIDACAO_OBJETIVO_SOCIAL_OBRIGATORIO("Obrigatório informar o objetivo social da pessoa juridica");
+    ERRO_VALIDACAO_OBJETIVO_SOCIAL_OBRIGATORIO("Obrigatório informar o objetivo social da pessoa juridica"),
+    ERRO_VALIDACAO_COD_DOCUMENTO_NAO_EXISTE("Obrigatório informar o código do documento"),
+    ERRO_VALIDACAO_DOCUMENTOS_PESSOA_FISICA_OBRIGATORIO("Obrigatório informar os dados do RG ou CNH"),
+    ERRO_VALIDACAO_NOME_COMPRIMENTO_MAXIMO("O campo nome não pode ter mais de 50 caracteres"),
+    ERRO_VALIDACAO_EMAIL_COMPRIMENTO_MAXIMO("O campo email não pode ter mais de 50 caracteres"),
+    ERRO_VALIDACAO_ATIVO_OBRIGATORIO("Obrigatório informar o campo ativo com os valores (SIM/NAO)"),
+    ERRO_VALIDACAO_NUMERO_DOCUMENTO_COMPRIMENTO_MAXIMO("Verifique a quantidade de caracteres no número do documento"),
+    ERRO_VALIDACAO_SOBRENOME_COMPRIMENTO_MAXIMO("O campo sobrenome não pode ter mais de 50 caracteres"),
+    ERRO_VALIDACAO_NACIONALIDADE_COMPRIMENTO_MAXIMO("O campo nacionalidade não pode ter mais de 50 caracteres"),
+    ERRO_VALIDACAO_NATURALIDADE_COMPRIMENTO_MAXIMO("O campo naturalidade não pode ter mais de 50 caracteres"),
+    ERRO_VALIDACAO_NOMECOMERCIAL_COMPRIMENTO_MAXIMO("O campo nome comercial não pode ter mais de 50 caracteres"),
+    ERRO_VALIDACAO_TIPO_INSCRICAO_INCORRETO("Verifique o campo tipo de inscrição"),
+    ERRO_VALIDACAO_NUMERO_INSCRICAO_COMPRIMENTO_MAXIMO("O campo número de inscrição não pode ter mais de 20 caracteres"),
+    ERRO_VALIDACAO_LOGRADOURO_COMPRIMENTO_MAXIMO("O campo logradouro não pode ter mais de 100 caracteres"),
+    ERRO_VALIDACAO_NUMERO_COMPRIMENTO_MAXIMO("O campo número não pode ter mais de 4 caracteres"),
+    ERRO_VALIDACAO_COMPLEMENTO_COMPRIMENTO_MAXIMO("O campo complemento não pode ter mais de 4 caracteres"),
+    ERRO_VALIDACAO_BAIRRO_COMPRIMENTO_MAXIMO("O campo bairro não pode ter mais de 4 caracteres"),
+    ERRO_VALIDACAO_LOCALIDADE_COMPRIMENTO_MAXIMO("O campo localidade não pode ter mais de 50 caracteres"),
+    ERRO_VALIDACAO_UF_COMPRIMENTO_MAXIMO("O campo UF não pode ter mais de 2 caracteres");
 
 
     private final String valor;

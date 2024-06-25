@@ -2,6 +2,7 @@ package com.map.invest.dtoFactory;
 
 import com.map.invest.canonico.DocumentoPrincipalCanonico;
 import com.map.invest.dto.DocumentoPrincipalDTO;
+import com.map.invest.util.constantes.TipoDocumentoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

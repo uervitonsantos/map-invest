@@ -11,7 +11,6 @@ import lombok.*;
 public class TelefoneCanonico {
 
     private Long telefoneID;
-    private Long pessoaID;
     private String codigo;
     private TipoTelefoneEnum tipoTelefone;
     private String numeroTelefone;

@@ -5,6 +5,8 @@ import com.map.invest.canonico.*;
 import com.map.invest.entity.*;
 import com.map.invest.filtro.FiltroWrapper;
 import com.map.invest.repository.*;
+import com.map.invest.util.constantes.AtivoEnum;
+import com.map.invest.util.constantes.TipoDocumentoEnum;
 import com.map.invest.util.validacao.MapInvestMensagens;
 import com.map.invest.util.validacao.exception.ValidacaoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class PessoaService {
     private EnderecoRepositorio enderecoRepositorio;
     @Autowired
     private TelefoneService telefoneService;
+    @Autowired
+    private DocumentosSecundariosService documentosSecundariosService;
     @Autowired
     private AcessoService acessoService;
     @Autowired
@@ -89,9 +93,10 @@ public class PessoaService {
     private void popularPessoa(Pessoa pessoa, PessoaCanonico pessoaCanonico, Endereco enderecoResult) {
         pessoa.setNome(pessoaCanonico.getNome());
         pessoa.setEmail(pessoaCanonico.getEmail());
+        pessoa.setAtivo(pessoaCanonico.getAtivo());
         popularDocumentoPrincipal(pessoa, pessoaCanonico.getDocumentoPrincipal());
         popularEndereco(pessoa, pessoaCanonico.getEndereco(), enderecoResult);
-        popularTelefone(pessoa, pessoaCanonico.getTelefones());
+        telefoneService.popularTelefone(pessoa, pessoaCanonico.getTelefones());
         popularAcesso(pessoa, pessoaCanonico.getAcesso());
     }
 
@@ -104,6 +109,46 @@ public class PessoaService {
         }
         documentoPrincipal.setTipoDocumentoPrincipal(documentoPrincipalCanonico.getTipoDocumentoPrincipal());
         documentoPrincipal.setNumeroDocumentoPrincipal(documentoPrincipalCanonico.getNumeroDocumentoPrincipal());
+
+        TipoDocumentoEnum tipo = documentoPrincipalCanonico.getTipoDocumentoPrincipal();
+        if (tipo.equals(TipoDocumentoEnum.CPF)) {
+            popularPessoaFisica(documentoPrincipal, documentoPrincipalCanonico.getPessoaFisica());
+        }
+        if (tipo.equals(TipoDocumentoEnum.CNPJ)) {
+            popularPessoaJuridica(documentoPrincipal, documentoPrincipalCanonico.getPessoaJuridica());
+        }
+    }
+
+    private void popularPessoaFisica(DocumentoPrincipal documentoPrincipal, PessoaFisicaCanonico pessoaFisicaCanonico) {
+        PessoaFisica pessoaFisica = documentoPrincipal.getPessoaFisica();
+        if (pessoaFisica == null) {
+            pessoaFisica = new PessoaFisica();
+            pessoaFisica.setDocumentoPrincipalID(documentoPrincipal.getDocumentoPrincipalID());
+            documentoPrincipal.setPessoaFisica(pessoaFisica);
+        }
+        pessoaFisica.setSobrenome(pessoaFisicaCanonico.getSobrenome());
+        pessoaFisica.setDataNascimento(pessoaFisicaCanonico.getDataNascimento());
+        pessoaFisica.setSexo(pessoaFisicaCanonico.getSexo());
+        pessoaFisica.setNacionalidade(pessoaFisicaCanonico.getNacionalidade());
+        pessoaFisica.setNaturalidade(pessoaFisicaCanonico.getNaturalidade());
+        //documentosSecundariosService.popularDocumentosSecundarios(pessoaFisica, pessoaFisicaCanonico.getDocumentosSecundarios());
+    }
+
+
+    private void popularPessoaJuridica(DocumentoPrincipal documentoPrincipal, PessoaJuridicaCanonico pessoaJuridicaCanonico) {
+        PessoaJuridica pessoaJuridica = documentoPrincipal.getPessoaJuridica();
+        if (pessoaJuridica == null) {
+            pessoaJuridica = new PessoaJuridica();
+            pessoaJuridica.setDocumentoPrincipalID(documentoPrincipal.getDocumentoPrincipalID());
+            documentoPrincipal.setPessoaJuridica(pessoaJuridica);
+        }
+        pessoaJuridica.setNomeComercia(pessoaJuridicaCanonico.getNomeComercia());
+        pessoaJuridica.setDataConstituicao(pessoaJuridicaCanonico.getDataConstituicao());
+        pessoaJuridica.setTipoInscricao(pessoaJuridicaCanonico.getTipoInscricao());
+        pessoaJuridica.setNumeroInscricao(pessoaJuridicaCanonico.getNumeroInscricao());
+        pessoaJuridica.setNaturazaJuridica(pessoaJuridicaCanonico.getNaturazaJuridica());
+        pessoaJuridica.setRamoAtividade(pessoaJuridicaCanonico.getRamoAtividade());
+        pessoaJuridica.setObjetivoSocial(pessoaJuridicaCanonico.getObjetivoSocial());
     }
 
     private void popularEndereco(Pessoa pessoa, EnderecoCanonico enderecoCanonico, Endereco enderecoResult) {
@@ -123,59 +168,6 @@ public class PessoaService {
         endereco.setUf(enderecoResult.getUf());
     }
 
-    private void popularTelefone(Pessoa pessoa, List<TelefoneCanonico> telefonesCanonicos) {
-        List<Telefone> telefonesExistentes = new ArrayList<>(pessoa.getTelefones());
-
-        Map<Long, Telefone> mapaTelefonesExistentes = telefonesExistentes.stream()
-                .collect(Collectors.toMap(Telefone::getTelefoneID, telefone -> telefone));
-
-        // Set de IDs de telefones canônicos para controle de exclusão
-        Set<Long> idsTelefonesCanonicos = telefonesCanonicos.stream()
-                .map(TelefoneCanonico::getTelefoneID).collect(Collectors.toSet());
-
-        // Atualiza os telefones existentes ou adiciona novos
-        for (TelefoneCanonico telefoneCanonico : telefonesCanonicos) {
-            Telefone telefoneExistente = mapaTelefonesExistentes.get(telefoneCanonico.getTelefoneID());
-            if (telefoneExistente != null) {
-                // Atualiza o telefone existente
-                telefoneExistente.setCodigo(telefoneCanonico.getCodigo());
-                telefoneExistente.setTipoTelefone(telefoneCanonico.getTipoTelefone());
-                telefoneExistente.setNumeroTelefone(telefoneCanonico.getNumeroTelefone());
-            } else {
-                // Adiciona novo telefone
-                Telefone novoTelefone = new Telefone();
-                novoTelefone.setPessoaID(pessoa.getPessoaID());
-                novoTelefone.setCodigo(telefoneCanonico.getCodigo());
-                novoTelefone.setTipoTelefone(telefoneCanonico.getTipoTelefone());
-                novoTelefone.setNumeroTelefone(telefoneCanonico.getNumeroTelefone());
-                telefonesExistentes.add(novoTelefone);
-            }
-        }
-        // Lista para armazenar os IDs dos telefones removidos
-        List<Long> idsTelefonesRemovidos = new ArrayList<>();
-
-        // Remove os telefones que não estão mais na lista canônica e armazena os IDs dos telefones removidos
-        telefonesExistentes.removeIf(telefone -> {
-            if (!idsTelefonesCanonicos.contains(telefone.getTelefoneID())) {
-                idsTelefonesRemovidos.add(telefone.getTelefoneID());
-                return true; // Remove o telefone da lista
-            }
-            return false; // Mantém o telefone na lista
-        });
-
-        // Remove os telefones do banco de dados e limpa a lista de telefones
-        // do usuário, se houver algum telefone removido
-        if (!idsTelefonesRemovidos.isEmpty()) {
-            pessoa.getTelefones().clear();
-            idsTelefonesRemovidos.forEach(telefoneID -> {
-                telefoneService.removeTelefone(telefoneID);
-            });
-        } else {
-            // Atualiza a lista de telefones do usuário
-            pessoa.setTelefones(telefonesExistentes);
-        }
-    }
-
     private void popularAcesso(Pessoa pessoa, AcessoCanonico acessoCanonico) {
         Acesso acesso = pessoa.getAcesso();
         if (acesso == null) {
@@ -193,6 +185,7 @@ public class PessoaService {
         Pessoa pessoa = geraPessoa(canonico);
         pessoa.setNome(canonico.getNome());
         pessoa.setEmail(canonico.getEmail());
+        pessoa.setAtivo(AtivoEnum.NAO);
         Pessoa pessoaSalvo = pessoaRepositorio.salvaPessoa(pessoa);
         salvaDocumentoPrincipal(canonico, pessoaSalvo);
         salvaEndereco(canonico, enderecoResult, pessoaSalvo);
@@ -207,31 +200,36 @@ public class PessoaService {
         documentoPrincipal.setTipoDocumentoPrincipal(canonico.getDocumentoPrincipal().getTipoDocumentoPrincipal());
         documentoPrincipal.setNumeroDocumentoPrincipal(canonico.getDocumentoPrincipal().getNumeroDocumentoPrincipal());
         DocumentoPrincipal principal = documentoPrincipalRepositorio.merge(documentoPrincipal);
-        salvaPessoaFisica(principal);
-        salvaPessoaJuridica(principal);
+        TipoDocumentoEnum tipo = canonico.getDocumentoPrincipal().getTipoDocumentoPrincipal();
+        if (tipo.equals(TipoDocumentoEnum.CPF)) {
+            salvaPessoaFisica(canonico, principal);
+        }
+        if (tipo.equals(TipoDocumentoEnum.CNPJ)) {
+            salvaPessoaJuridica(canonico, principal);
+        }
     }
 
-    private void salvaPessoaFisica(DocumentoPrincipal principal) {
+    private void salvaPessoaFisica(PessoaCanonico canonico, DocumentoPrincipal principal) {
         PessoaFisica pessoaFisica = new PessoaFisica();
         pessoaFisica.setDocumentoPrincipalID(principal.getDocumentoPrincipalID());
-        pessoaFisica.setSobrenome(principal.getPessoaFisica().getSobrenome());
-        pessoaFisica.setDataNascimento(principal.getPessoaFisica().getDataNascimento());
-        pessoaFisica.setSexo(principal.getPessoaFisica().getSexo());
-        pessoaFisica.setNacionalidade(principal.getPessoaFisica().getNacionalidade());
-        pessoaFisica.setNaturalidade(principal.getPessoaFisica().getNaturalidade());
+        pessoaFisica.setSobrenome(canonico.getDocumentoPrincipal().getPessoaFisica().getSobrenome());
+        pessoaFisica.setDataNascimento(canonico.getDocumentoPrincipal().getPessoaFisica().getDataNascimento());
+        pessoaFisica.setSexo(canonico.getDocumentoPrincipal().getPessoaFisica().getSexo());
+        pessoaFisica.setNacionalidade(canonico.getDocumentoPrincipal().getPessoaFisica().getNacionalidade());
+        pessoaFisica.setNaturalidade(canonico.getDocumentoPrincipal().getPessoaFisica().getNaturalidade());
         pessoaFisicaRepositorio.merge(pessoaFisica);
     }
 
-    private void salvaPessoaJuridica(DocumentoPrincipal principal) {
+    private void salvaPessoaJuridica(PessoaCanonico canonico, DocumentoPrincipal principal) {
         PessoaJuridica pessoaJuridica = new PessoaJuridica();
         pessoaJuridica.setDocumentoPrincipalID(principal.getDocumentoPrincipalID());
-        pessoaJuridica.setNomeComercia(principal.getPessoaJuridica().getNomeComercia());
-        pessoaJuridica.setDataConstituicao(principal.getPessoaJuridica().getDataConstituicao());
-        pessoaJuridica.setTipoInscricao(principal.getPessoaJuridica().getTipoInscricao());
-        pessoaJuridica.setNumeroInscricao(principal.getPessoaJuridica().getNumeroInscricao());
-        pessoaJuridica.setNaturazaJuridica(principal.getPessoaJuridica().getNaturazaJuridica());
-        pessoaJuridica.setRamoAtividade(principal.getPessoaJuridica().getRamoAtividade());
-        pessoaJuridica.setObjetivoSocial(principal.getPessoaJuridica().getObjetivoSocial());
+        pessoaJuridica.setNomeComercia(canonico.getDocumentoPrincipal().getPessoaJuridica().getNomeComercia());
+        pessoaJuridica.setDataConstituicao(canonico.getDocumentoPrincipal().getPessoaJuridica().getDataConstituicao());
+        pessoaJuridica.setTipoInscricao(canonico.getDocumentoPrincipal().getPessoaJuridica().getTipoInscricao());
+        pessoaJuridica.setNumeroInscricao(canonico.getDocumentoPrincipal().getPessoaJuridica().getNumeroInscricao());
+        pessoaJuridica.setNaturazaJuridica(canonico.getDocumentoPrincipal().getPessoaJuridica().getNaturazaJuridica());
+        pessoaJuridica.setRamoAtividade(canonico.getDocumentoPrincipal().getPessoaJuridica().getRamoAtividade());
+        pessoaJuridica.setObjetivoSocial(canonico.getDocumentoPrincipal().getPessoaJuridica().getObjetivoSocial());
         pessoaJuridicaRepositorio.merge(pessoaJuridica);
     }
 
@@ -300,12 +298,30 @@ public class PessoaService {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NOME_OBRIGATORIO.getValor());
         }
 
+        if (pessoaCanonico.getNome().length() > 50) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NOME_COMPRIMENTO_MAXIMO.getValor());
+        }
+
         if (Strings.isNullOrEmpty(pessoaCanonico.getEmail())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_EMAIL_OBRIGATORIO.getValor());
         }
 
+        if (pessoaCanonico.getEmail().length() > 50) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_EMAIL_COMPRIMENTO_MAXIMO.getValor());
+        }
+
         if (!EMAIL_REGEX.matcher(pessoaCanonico.getEmail()).matches()) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_EMAIL_CARACTERES_INVALIDOS.getValor());
+        }
+
+        AtivoEnum tipo = pessoaCanonico.getAtivo();
+
+        if (tipo == null) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_ATIVO_OBRIGATORIO.getValor());
+        } else{
+            if(!tipo.equals(AtivoEnum.NAO) && !tipo.equals(AtivoEnum.SIM)){
+                throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_ATIVO_OBRIGATORIO.getValor());
+            }
         }
 
         documentoPrincipalService.validaDadosDocumentoPrincipal(documentoCanonico);

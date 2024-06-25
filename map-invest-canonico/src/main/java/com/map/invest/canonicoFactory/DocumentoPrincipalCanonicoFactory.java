@@ -23,13 +23,7 @@ public class DocumentoPrincipalCanonicoFactory {
 
     public DocumentoPrincipalCanonico builderDocumento(DocumentoPrincipal documentoPrincipal) {
         return Optional.ofNullable(documentoPrincipal).map(entidade -> {
-            String numeroFormatado = null;
-            TipoDocumentoEnum tipo = entidade.getTipoDocumentoPrincipal();
-            if (tipo.equals(TipoDocumentoEnum.CPF)) {
-                numeroFormatado = formatacao.formatarCPF(entidade.getNumeroDocumentoPrincipal());
-            } else if (tipo.equals(TipoDocumentoEnum.CNPJ)) {
-                numeroFormatado = formatacao.formatarCNPJ(entidade.getNumeroDocumentoPrincipal());
-            }
+            var numeroFormatado = getString(entidade);
             return DocumentoPrincipalCanonico.builder()
                     .documentoPrincipalID(entidade.getDocumentoPrincipalID())
                     .pessoaID(entidade.getPessoaID())
@@ -39,5 +33,16 @@ public class DocumentoPrincipalCanonicoFactory {
                     .pessoaJuridica(pessoaJuridicaCanonicoFactory.builderPessoaJuridica(entidade.getPessoaJuridica()))
                     .build();
         }).orElse(null);
+    }
+
+    private String getString(DocumentoPrincipal entidade) {
+        String numeroFormatado = null;
+        TipoDocumentoEnum tipo = entidade.getTipoDocumentoPrincipal();
+        if (tipo.equals(TipoDocumentoEnum.CPF)) {
+            numeroFormatado = formatacao.formatarCPF(entidade.getNumeroDocumentoPrincipal());
+        } else if (tipo.equals(TipoDocumentoEnum.CNPJ)) {
+            numeroFormatado = formatacao.formatarCNPJ(entidade.getNumeroDocumentoPrincipal());
+        }
+        return numeroFormatado;
     }
 }

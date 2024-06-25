@@ -19,7 +19,7 @@ import lombok.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class EnderecoDTO {
 
-    @Schema(description = "Identificador único do endereço", example = "1")
+    @Schema(description = "Identificador único do endereço", example = "1000")
     @XmlElement(nillable = false)
     private Long enderecoID;
 

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,9 +23,6 @@ public class Telefone implements Serializable {
     @SequenceGenerator(name = "telefone_sequence", sequenceName = "SEQ_TELEFONE", allocationSize = 1)
     private Long telefoneID;
 
-    @Column(name = "PESSOA_ID")
-    private Long pessoaID;
-
     @Column(name = "CODIGO")
     private String codigo;
 
@@ -35,9 +31,5 @@ public class Telefone implements Serializable {
 
     @Column(name = "NUMERO_TELEFONE")
     private String numeroTelefone;
-
-    @ManyToMany(mappedBy = "telefones", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE,
-            CascadeType.MERGE})
-    private List<Pessoa> pessoas;
 
 }

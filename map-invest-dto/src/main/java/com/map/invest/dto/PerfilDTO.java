@@ -18,7 +18,7 @@ import java.util.List;
 @XmlRootElement(name = "Perfil")
 public class PerfilDTO {
 
-    @Schema(description = "Identificador único do perfil", example = "1")
+    @Schema(description = "Identificador único do perfil", example = "1000")
     @XmlElement(nillable = false)
     private Long perfilID;
 

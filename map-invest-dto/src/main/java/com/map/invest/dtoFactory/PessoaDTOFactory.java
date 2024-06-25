@@ -52,6 +52,7 @@ public class PessoaDTOFactory {
                     .pessoaID(entidade.getPessoaID())
                     .nome(entidade.getNome())
                     .email(entidade.getEmail())
+                    .ativo(entidade.getAtivo())
                     .documentoPrincipal(documentoPrincipalDTOFactory.documentoCanonico(entidade.getDocumentoPrincipal()))
                     .endereco(enderecoDTOFactory.enderecoCanonico(entidade.getEndereco()))
                     .telefones(telefoneDTOFactory.telefonesCanonico(entidade.getTelefones()))

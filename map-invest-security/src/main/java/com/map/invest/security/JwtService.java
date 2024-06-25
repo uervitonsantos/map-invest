@@ -10,7 +10,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,11 +25,10 @@ import java.util.stream.Collectors;
 public class JwtService {
 
     @Value("${jwt.currentTimeMillis}")
-    private int expirationTime;
-
-
+    private long TokenExpirationTime;
+    @Value("${jwt.refresh.token.expiration}")
+    private long refreshTokenExpirationTime;
     private final String secretKey;
-
     public JwtService(@Value("${jwt.private.key}") Resource resource) throws IOException {
         this.secretKey = loadResourceContent(resource);
     }
@@ -66,6 +64,11 @@ public class JwtService {
                 .getBody();
     }
 
+    public boolean isTokenValid(String token, String user) {
+        final String username = extractUsername(token);
+        return (username.equals(user)) && !isTokenExpired(token);
+    }
+
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -77,15 +80,20 @@ public class JwtService {
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        return createToken(claims, username, TokenExpirationTime);
     }
 
-    private String createToken(Map<String, Object> claims, String username) {
+    public String generateRefreshToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, username, refreshTokenExpirationTime);
+    }
+
+    private String createToken(Map<String, Object> claims, String username, long expiration) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -94,4 +102,5 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
 }

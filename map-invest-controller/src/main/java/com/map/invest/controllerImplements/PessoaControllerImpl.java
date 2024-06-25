@@ -10,6 +10,7 @@ import com.map.invest.filtro.FiltroWrapper;
 import com.map.invest.filtroDTO.PessoaFiltroDTO;
 import com.map.invest.resouce.Resource;
 import com.map.invest.resource.PessoaController;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.BeanParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

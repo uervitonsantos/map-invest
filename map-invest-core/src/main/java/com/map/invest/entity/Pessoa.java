@@ -1,5 +1,6 @@
 package com.map.invest.entity;
 
+import com.map.invest.util.constantes.AtivoEnum;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -31,7 +33,7 @@ public class Pessoa implements Serializable {
     private String email;
 
     @Column(name = "ATIVO")
-    private String ativo;
+    private AtivoEnum ativo;
 
     @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
@@ -45,7 +47,7 @@ public class Pessoa implements Serializable {
     @JoinTable(name = "PESSOA_TELEFONE", joinColumns =
     @JoinColumn(name = "PESSOA_ID", referencedColumnName = "PESSOA_ID", insertable = false, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "TELEFONE_PESSOA_ID", referencedColumnName = "TELEFONE_ID", insertable = false, updatable = false))
-    private List<Telefone> telefones;
+    private List<Telefone> telefones = new ArrayList<>();
 
     @OneToOne(mappedBy = "pessoa", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, orphanRemoval = true)
     private Acesso acesso;
@@ -62,7 +64,6 @@ public class Pessoa implements Serializable {
 
     public Telefone novoTelefone(Long telefoneID) {
         Telefone novo = new Telefone();
-        novo.setPessoaID(pessoaID);
         novo.setTelefoneID(telefoneID);
         Telefone telefone = telefones.stream().filter(el -> el.equals(novo)).findFirst().orElse(novo);
         telefones.add(telefone);

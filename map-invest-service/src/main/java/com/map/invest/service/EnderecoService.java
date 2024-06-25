@@ -57,22 +57,40 @@ public class EnderecoService {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_CEP_OBRIGATORIO.getValor());
         }
         if (Strings.isNullOrEmpty(enderecoResult.getLogradouro())) {
-            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_RUA_OBRIGATORIO.getValor());
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGRADOURO_OBRIGATORIO.getValor());
+        }
+        if (enderecoResult.getLogradouro().length() > 100) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOGRADOURO_COMPRIMENTO_MAXIMO.getValor());
         }
         if (Strings.isNullOrEmpty(enderecoCanonico.getNumero())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_OBRIGATORIO.getValor());
         }
+//        if (enderecoResult.getNumero()) {
+//            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_NUMERO_COMPRIMENTO_MAXIMO.getValor());
+//        }
         if (Strings.isNullOrEmpty(enderecoCanonico.getComplemento())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COMPLEMENTO_OBRIGATORIO.getValor());
+        }
+        if (enderecoResult.getComplemento().length() > 100) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_COMPLEMENTO_COMPRIMENTO_MAXIMO.getValor());
         }
         if (Strings.isNullOrEmpty(enderecoResult.getBairro())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_BAIRRO_OBRIGATORIO.getValor());
         }
+        if (enderecoResult.getBairro().length() > 100) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_BAIRRO_COMPRIMENTO_MAXIMO.getValor());
+        }
         if (Strings.isNullOrEmpty(enderecoResult.getLocalidade())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_CIDADE_OBRIGATORIO.getValor());
         }
+        if (enderecoResult.getLocalidade().length() > 50) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_LOCALIDADE_COMPRIMENTO_MAXIMO.getValor());
+        }
         if (Strings.isNullOrEmpty(enderecoResult.getUf())) {
             throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_UF_OBRIGATORIO.getValor());
+        }
+        if (enderecoResult.getUf().length() > 2) {
+            throw new ValidacaoException(MapInvestMensagens.ERRO_VALIDACAO_UF_COMPRIMENTO_MAXIMO.getValor());
         }
     }
 
